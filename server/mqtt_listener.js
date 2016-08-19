@@ -10,10 +10,10 @@
 
  var mqtt    = require('mqtt');
  var client  = mqtt.connect('mqtt://localhost');
- var channelName = "ESP-MQTT-RGB-control"
+ var channelName = "RGB-LED-control/broadcast";
 
  client.on('connect', function () {
-   client.subscribe(channelName);
+   client.subscribe('#');
    client.publish(channelName, 'Mosquitto seems to be working');
  });
 
