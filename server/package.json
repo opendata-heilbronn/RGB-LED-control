@@ -1,0 +1,32 @@
+{
+  "name": "rgb-led-control_server",
+  "version": "0.0.1",
+  "description": "https://github.com/opendata-heilbronn/RGB-LED-control",
+  "main": "mqtt_listener.js",
+  "dependencies": {
+    "mqtt": "^1.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opendata-heilbronn/RGB-LED-control.git"
+  },
+  "keywords": [
+    "rgb",
+    "led",
+    "esp",
+    "esp8266",
+    "arduino",
+    "control",
+    "mqtt"
+  ],
+  "author": "@LeoDJ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/opendata-heilbronn/RGB-LED-control/issues"
+  },
+  "homepage": "https://github.com/opendata-heilbronn/RGB-LED-control#readme"
+}

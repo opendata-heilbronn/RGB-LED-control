@@ -10,3 +10,4 @@ Software overview:
 - Raspberry Pi running some sort of (e.g.) nodeJS script running a webserver (for controlling the LEDs) and MQTT to coordinate the ESP8266 controllers
 - ESP8266 running a simple™ MQTT client which receives the control signals and uses them to control the LED strip(s)
 
+Compatible with both ArduinoIDE and PlatformIO. The necessary libraries are included in the sketches and don't need to be installed externally. (Except ESP8266 for ArduinoIDE)
