@@ -8,5 +8,5 @@ app.get('/api/devices', function (req, res) {
 
 app.post('/api/devices/:mac/rgb', function (req, res) {
     if (!req.body.color) res.status(500).send('no color');
-    res.send(rgbControls.sendRGB(req.params.mac, req.body.color));
+    res.send(rgbControls.sendFade(req.params.mac, req.body.color, 200));
 });

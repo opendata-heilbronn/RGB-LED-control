@@ -26,7 +26,9 @@ function fetch() {
     return dispatch => {
         dispatch(request());
         const socket = io('http://localhost:3000/');
+        socket.on('connect', () => {console.log('connected to socket.io')});
         socket.on('devices', (data) => {
+            console.log('receieved socket.io update', data);
             dispatch(receive(data));
         });
         return axios.get('/api/devices')

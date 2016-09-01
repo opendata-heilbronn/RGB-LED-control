@@ -1,94 +1,84 @@
 import React, {Component} from "react";
 import axios from "axios";
-import PlayIcon from "material-ui/svg-icons/av/play-arrow";
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import { SketchPicker } from 'react-color';
 import {showNotification} from "../actions/notificationActions";
+import {fetchIfNeeded} from "../actions/devicesActions";
 import {connect} from "react-redux";
 import PageLoadingIndicator from "./utils/PageLoadingIndicator";
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardTitle, CardText} from "material-ui/Card";
 
 class DeviceControl extends Component {
-    state = {devices: {}};
+    state = {};
 
-    updateData() {
+    onSubmit(color) {
         const {dispatch} = this.props;
-        this.setState({loading: true});
-        axios.get('/api/devices')
-            .then((response) => {
-                this.setState({loading: false, devices: response.data})
-            })
-            .catch((error) => {
-                console.trace(error.stack);
-                this.setState({loading: false});
-                dispatch(showNotification(error.message));
-            });
-    }
-
-    onDeviceClick(mac) {
-        const {dispatch} = this.props;
-        axios.post(`/api/devices/${mac}/rgb`, {
-            color: '#0000FF'
+        const {device} = this.state;
+        if(!color) color = this.state.color;
+        console.log(color);
+        axios.post(`/api/devices/${device}/rgb`, {
+            color
         })
             .then(() => {
-                dispatch(showNotification(`Mac ${mac} sollte nun 2s lang blau leuchten`));
-                return new Promise(resolve => {
-                    setTimeout(resolve, 2000);
-                });
-            })
-            .then(() => {
-                return axios.post(`/api/devices/${mac}/rgb`, {
-                    color: '#000000'
-                })
+                dispatch(showNotification(`${device} leuchtet nun in ${color}`));
             })
             .catch((error) => {
                 console.trace(error.stack);
-                this.setState({loading: false});
                 dispatch(showNotification(error.message));
             });
     }
 
     componentWillMount() {
-        this.updateData();
+        const {dispatch} = this.props;
+        dispatch(fetchIfNeeded());
     }
 
-    renderDeviceItems() {
-        const {devices} = this.state;
-        return Object.keys(devices).map(mac => {
-            const device = devices[mac];
-            return <ListItem
-                key={mac}
-                rightIcon={<PlayIcon />}
-                primaryText={mac}
-                secondaryText={`Raum ${device.room}`}
-                onClick={this.onDeviceClick.bind(this, mac)}
-            />;
-        });
+    getMenuItems() {
+        const {items} = this.props;
+        return Object.keys(items).map(mac => {
+            const macString = mac.toString();
+            const device = items[macString];
+            return <MenuItem key={macString} value={macString} primaryText={`Raum ${device.room} (${device.isOnline ? 'online' : 'offline'})`} />;
+        })
     }
 
-    getContent(deviceItems) {
-        if (this.state.loading) {
+    handleDeviceChange = (event, index, value) => {
+        this.setState({device: value});
+    };
+
+    handleColorChange = (value) => {
+        this.setState({color: value.hex});
+        if(this.state.device) this.onSubmit(value.hex);
+        else this.props.dispatch(showNotification('Kein Raum ausgewählt'))
+    };
+
+    getContent() {
+        if (this.props.isFetching) {
             return <PageLoadingIndicator />
         } else {
+            const menuItems = this.getMenuItems();
             return <Card>
-                    <CardTitle title="Ansteuerung testen" subtitle="einzeln je Raum" />
-                    <CardText>
-                        <List>
-                            {deviceItems}
-                        </List>
-                    </CardText>
-                </Card>;
+                <CardTitle title="Einzelne Farbe setzen" />
+                <CardText>
+                    <SelectField value={this.state.device} onChange={this.handleDeviceChange.bind(this)} style={{marginBottom:'1rem'}}>
+                        {menuItems}
+                    </SelectField>
+                    <SketchPicker type="sketch" color={ this.state.color } onChangeComplete={this.handleColorChange.bind(this)} />
+                </CardText>
+            </Card>;
         }
     }
 
     render() {
-        const deviceItems = this.renderDeviceItems();
-        const content = this.getContent(deviceItems);
-
         return (
-            <section>
-                {content}
+            <section style={{marginTop: '1rem'}}>
+                {this.getContent()}
             </section>
         );
     }
 }
 
-export default connect(() => ({}))(DevicesTestList)
+const mapStateToProps = (state) => state.devices ? state.devices : {isFetching: false, items: {}};
+
+export default connect(mapStateToProps)(DeviceControl)
