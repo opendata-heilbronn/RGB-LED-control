@@ -122,11 +122,19 @@ client.on('message', function (topic, message) {
     console.log('message received');
     if (topic == topicRegistration) {
         const split = message.toString().split(';');
+        if(!devices[split[0]]) {
+            console.log('unknown device ' + message.toString());
+            return false;
+        }
         if (split[1]) devices[split[0]].version = split[1];
         console.log("New registration from MAC " + split[0] + ', Version: ' + split[1]);
     }
     else if (topic.substr(0, topicACK.length - 1) == topicACK.substr(0, topicACK.length - 1)) { //check if topic is ACK
         var mac = topic.split("/").pop();
+        if(!devices[mac]) {
+            console.log('unknown device ' + mac);
+            return false;
+        }
         if (devices[mac].isOnline == false) {
             console.log("Node " + mac + " went back online");
             sendDevices();
