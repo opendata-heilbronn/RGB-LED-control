@@ -18,7 +18,7 @@
 #include "gammaTable.h"
 #include "config.h" //set your SSID and pass here
 
-#define DEBUG false //debug output
+#define DEBUG true //debug output
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,

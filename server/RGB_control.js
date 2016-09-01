@@ -26,33 +26,39 @@ console.log = function(d) { //
 
 
 //MQTT stuff
-var client  = mqtt.connect('mqtt://localhost');
+var client  = mqtt.connect('mqtt://192.168.178.168');
 var domain = "RGB-LED-control";
 var topicRegistration = domain + "/registration";
 var topicACK = domain + "/ack/+";
 var topicControl = domain + "/data/RGB/";
 var topicFade = domain + "/data/fade/"
 
-var accessTable = [ //define order of controllers (by MAC)
-  "5C:CF:7F:8B:F0:70",
-  "5C:CF:7F:8B:C9:C4",
-  "5C:CF:7F:88:1B:28",
-  "18:FE:34:D3:F5:7F"
-]
-var onlineStatus = {}
+var devices = {
+  "5C:CF:7F:1B:6F:85": {room: 1},
+  "5C:CF:7F:8B:F0:70": {room: 2},
+  "5C:CF:7F:8B:C9:C4": {room: 3},
+  "5C:CF:7F:88:1B:28": {room: 4},
+  "18:FE:34:D3:F5:7F": {room: 5},
+  "5C:CF:7F:88:1D:A0": {room: 6},
+  "18:FE:34:CC:FC:EA": {room: 7},
+  "5C:CF:7F:88:1B:5D": {room: 8},
+  "5C:CF:7F:88:1E:04": {room: 9},
+  "5C:CF:7F:8B:C5:03": {room: 10},
+  "5C:CF:7F:88:1A:13": {room: 11},
+  "18:FE:34:D4:2E:BD": {room: 12},
+};
 
-function sendRGB(id, rgb)
+function sendRGB(mac, rgb)
 {
-  //var rgb =    //rgb conversion
-  client.publish(topicControl + accessTable[id], rgb);
-  console.log(id + " <set " + rgb);
+  client.publish(topicControl + mac, rgb);
+  console.log(mac + " <set " + rgb);
 }
 
-function sendFade(id, rgb, fadeTime) //
+function sendFade(mac, rgb, fadeTime) //
 {
   var fadeStr = rgb + ";" + fadeTime;
-  client.publish(topicFade + accessTable[id], fadeStr);
-  console.log(id + " <fade " + rgb + " in " + fadeTime + "ms");
+  client.publish(topicFade + mac, fadeStr);
+  console.log(mac + " <fade " + rgb + " in " + fadeTime + "ms");
 }
 
 function dec2hex(i) {
@@ -85,34 +91,37 @@ function party()
 client.on('connect', function () {
   client.subscribe(topicRegistration);
   client.subscribe(topicACK);
-  setInterval(party, 30);
-  sendRGB(0, "#FFFFFF")
+  //setInterval(party, 30);
+  sendRGB(0, "#FFFFFF");
   //sendFade(0, "#000000", 500); //fade to #123456 in 500 ms
 });
 
 client.on('message', function(topic, message) {
   if(topic == topicRegistration) {
-    console.log("New registration from MAC " + message);
+    const split = message.split(';');
+    if(split[1]) devices[split[0]].version = split[1];
+    console.log("New registration from MAC " + split[0] + ', Version: ' + split[1]);
   }
   else if (topic.substr(0, topicACK.length-1) == topicACK.substr(0, topicACK.length-1)) { //check if topic is ACK
     var mac = topic.split("/").pop();
-    if(onlineStatus[mac] == undefined)
-      onlineStatus[mac] = {};
-    if(onlineStatus[mac].isOnline == false)
+    if(devices[mac].isOnline == false)
       console.log("Node " + mac + " went back online");
-    onlineStatus[mac].isOnline = true;
-    onlineStatus[mac].lastSeen = Date.now();
+    devices[mac].isOnline = true;
+    devices[mac].lastSeen = Date.now();
   }
 });
 
 function keepalive() {
   client.publish("RGB-LED-control/keepalive", Date.now().toString());
-  Object.keys(onlineStatus).forEach(function (key) {
-    if(onlineStatus[key].lastSeen + 15000 < Date.now()) {
-      if(onlineStatus[key].isOnline == true)
+  Object.keys(devices).forEach(function (key) {
+    if(devices[key].lastSeen + 15000 < Date.now()) {
+      if(devices[key].isOnline == true)
         console.log("Node " + key + " went offline");
-      onlineStatus[key].isOnline = false;
+      devices[key].isOnline = false;
     }
 });
 }
 setInterval(keepalive, 5000);
+
+
+module.exports = { devices, sendRGB, sendFade };

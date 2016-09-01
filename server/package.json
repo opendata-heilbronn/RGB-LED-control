@@ -4,7 +4,10 @@
   "description": "https://github.com/opendata-heilbronn/RGB-LED-control",
   "main": "mqtt_listener.js",
   "dependencies": {
-    "mqtt": "^1.14.0"
+    "mqtt": "^1.14.0",
+    "express": "latest",
+    "body-parser": "^1.15.2",
+    "hsv-rgb": "latest"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,24 +1,12 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {List, ListItem} from "material-ui/List";
 import PlayIcon from "material-ui/svg-icons/av/play-arrow";
 import {showNotification} from "../actions/notificationActions";
 import {connect} from "react-redux";
 import PageLoadingIndicator from "./utils/PageLoadingIndicator";
-import {Card, CardTitle, CardText} from 'material-ui/Card';
-import Avatar from 'material-ui/Avatar';
-import OnlineIcon from 'material-ui/svg-icons/navigation/check';
-import OfflineIcon from 'material-ui/svg-icons/navigation/close';
-import {green500, lightBlack} from 'material-ui/styles/colors';
-import moment from 'moment';
-moment.locale('de');
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
-const formatDate = (ts) => {
-    if(!ts) return '-';
-    return moment(ts).format('DD.MM.YY HH:mm:ss');
-};
-
-class DevicesTestList extends Component {
+class DeviceControl extends Component {
     state = {devices: {}};
 
     updateData() {
@@ -41,7 +29,7 @@ class DevicesTestList extends Component {
             color: '#0000FF'
         })
             .then(() => {
-                dispatch(showNotification(`${mac} leuchtet nun 2s lang blau`));
+                dispatch(showNotification(`Mac ${mac} sollte nun 2s lang blau leuchten`));
                 return new Promise(resolve => {
                     setTimeout(resolve, 2000);
                 });
@@ -66,14 +54,11 @@ class DevicesTestList extends Component {
         const {devices} = this.state;
         return Object.keys(devices).map(mac => {
             const device = devices[mac];
-            const avatar = device.isOnline ? <Avatar icon={<OnlineIcon />} backgroundColor={green500} /> : <Avatar icon={<OfflineIcon />} backgroundColor={lightBlack} />;
             return <ListItem
                 key={mac}
-                leftAvatar={avatar}
                 rightIcon={<PlayIcon />}
-                primaryText={`Raum ${device.room}`}
-                secondaryText={<p>{mac}<br />{formatDate(device.lastSeen)}</p>}
-                secondaryTextLines={2}
+                primaryText={mac}
+                secondaryText={`Raum ${device.room}`}
                 onClick={this.onDeviceClick.bind(this, mac)}
             />;
         });
