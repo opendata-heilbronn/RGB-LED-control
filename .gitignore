@@ -38,3 +38,5 @@ jspm_packages
 
 .travis.yml
 config.h
+.idea
+*.iml
