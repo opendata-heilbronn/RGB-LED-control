@@ -4,7 +4,7 @@
  * - https://github.com/esp8266/Arduino
  * - https://github.com/knolleary/pubsubclient
  *  TODO 10bit / 8 bit gamma table (for more accurate PWM)
- *
+ * asdf
  */
 
 #include <Arduino.h>
@@ -19,6 +19,7 @@
 #include "config.h" //set your SSID and pass here
 
 #define DEBUG false //debug output
+String Version = "v0.0.1";
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,
@@ -53,7 +54,9 @@ int fadeTime = 0;
 
 void registration()
 {
-  mqttClient.publish("RGB-LED-control/registration", thisMAC.c_str());
+  String regString = thisMAC;
+  regString += ";" + Version;
+  mqttClient.publish("RGB-LED-control/registration", regString.c_str());
 }
 
 
@@ -75,17 +78,10 @@ void parseRGB(String rgb)
 int tmpLast = 0;
 void setParsedRGB()
 {
-  analogWrite(r1Pin, gamma8[curRGB[0]] * 4);
-  analogWrite(g1Pin, gamma8[curRGB[1]] * 4);
-  analogWrite(b1Pin, gamma8[curRGB[2]] * 4);
-  int tmp = gamma8[curRGB[0]] * 4;
-  if(tmp != tmpLast)
-  {
-    tmpLast = tmp;
-    Serial.println(tmp);
-  }
-
-  //Serial.println(curRGB[2]);
+  //analogWrite(r1Pin, gamma8[curRGB[0]] * 4);
+  analogWrite(r1Pin, gamma10[curRGB[0]]);
+  analogWrite(g1Pin, gamma10[curRGB[1]]);
+  analogWrite(b1Pin, gamma10[curRGB[2]]);
 }
 
 void parseFade(String fadeStr) //example fadeString: "#123456;500"
@@ -179,6 +175,7 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
   Serial.print("MAC adress: ");
   Serial.println(thisMAC);
+  Serial.println("Version " + Version);
 }
 
 
