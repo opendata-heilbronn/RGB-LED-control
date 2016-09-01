@@ -31,10 +31,12 @@ var domain = "RGB-LED-control";
 var topicRegistration = domain + "/registration";
 var topicACK = domain + "/ack/+";
 var topicControl = domain + "/data/RGB/";
+var topicFade = domain + "/data/fade/"
 
 var accessTable = [ //define order of controllers (by MAC)
   "5C:CF:7F:8B:F0:70",
   "5C:CF:7F:8B:C9:C4",
+  "5C:CF:7F:88:1B:28",
   "18:FE:34:D3:F5:7F"
 ]
 var onlineStatus = {}
@@ -43,24 +45,39 @@ function sendRGB(id, rgb)
 {
   //var rgb =    //rgb conversion
   client.publish(topicControl + accessTable[id], rgb);
+  console.log(id + " <set " + rgb);
+}
+
+function sendFade(id, rgb, fadeTime) //
+{
+  var fadeStr = rgb + ";" + fadeTime;
+  client.publish(topicFade + accessTable[id], fadeStr);
+  console.log(id + " <fade " + rgb + " in " + fadeTime + "ms");
 }
 
 function dec2hex(i) {
    return (i+0x100).toString(16).substr(-2).toUpperCase();
 }
 
-var hue = 0;
-function party()
+function rgbArrToStr(rgb)
 {
-  var rgb = hsl2rgb(hue, 100, 100);
   var rgbString = "#";
   rgbString += dec2hex(rgb[0]);
   rgbString += dec2hex(rgb[1]);
   rgbString += dec2hex(rgb[2]);
+  return rgbString;
+}
+
+var hue = 0;
+function party()
+{
+  var rgb = hsl2rgb(hue, 100, 100);
+  var rgbString = rgbArrToStr(rgb);
   //console.log(rgbString);
-  sendRGB(2, rgbString);
+  //sendRGB(0, rgbString);
+  sendFade(0, rgbString, 30);
   hue+=5;
-  if (hue >= 361)
+  if (hue >= 360)
     hue = 0;
 }
 
@@ -69,7 +86,8 @@ client.on('connect', function () {
   client.subscribe(topicRegistration);
   client.subscribe(topicACK);
   setInterval(party, 30);
-  sendRGB(2, "#FFFFFF")
+  sendRGB(0, "#FFFFFF")
+  //sendFade(0, "#000000", 500); //fade to #123456 in 500 ms
 });
 
 client.on('message', function(topic, message) {

@@ -3,14 +3,19 @@
  * Sources:
  * - https://github.com/esp8266/Arduino
  * - https://github.com/knolleary/pubsubclient
+ *  TODO 10bit / 8 bit gamma table (for more accurate PWM)
  *
  */
 
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
+#include <ESP8266mDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
 #include <PubSubClient.h>
 #include <sstream>
 
+#include "gammaTable.h"
 #include "config.h" //set your SSID and pass here
 
 #define DEBUG false //debug output
@@ -34,10 +39,17 @@ String domain = "RGB-LED-control";
 
 String subscriptions[] = {
   domain + "/keepalive",
-  domain + "/data/RGB/" + thisMAC
+  domain + "/data/RGB/" + thisMAC,
+  domain + "/data/fade/" + thisMAC
 };
 const unsigned char subscriptions_length = sizeof(subscriptions)/sizeof(subscriptions[0]);
 
+int r1, g1, b1;
+unsigned long fadeRcvTime, lastFadePWMMillis=0;
+int curRGB[] = {0, 0, 0},
+     wasRGB[3],
+     toRGB[3];
+int fadeTime = 0;
 
 void registration()
 {
@@ -45,21 +57,68 @@ void registration()
 }
 
 
-void setRGB(String rgb)
+void parseRGB(String rgb)
 {
-  Serial.println("Setting RGB " + rgb);
-
   // Get rid of '#' and convert it to integer
   int number = (int) strtol( &rgb[1], NULL, 16);
-  Serial.println(number);
+  //Serial.println(number);
 
   // Split them up into r, g, b values
-  int r = number >> 16;
-  int g = number >> 8 & 0xFF;
-  int b = number & 0xFF;
-  analogWrite(r1Pin, r * 4);
-  analogWrite(g1Pin, g * 4);
-  analogWrite(b1Pin, b * 4);
+  r1 = number >> 16;
+  g1 = number >> 8 & 0xFF;
+  b1 = number & 0xFF;
+  curRGB[0] = r1;
+  curRGB[1] = g1;
+  curRGB[2] = b1;
+}
+
+int tmpLast = 0;
+void setParsedRGB()
+{
+  analogWrite(r1Pin, gamma8[curRGB[0]] * 4);
+  analogWrite(g1Pin, gamma8[curRGB[1]] * 4);
+  analogWrite(b1Pin, gamma8[curRGB[2]] * 4);
+  int tmp = gamma8[curRGB[0]] * 4;
+  if(tmp != tmpLast)
+  {
+    tmpLast = tmp;
+    Serial.println(tmp);
+  }
+
+  //Serial.println(curRGB[2]);
+}
+
+void parseFade(String fadeStr) //example fadeString: "#123456;500"
+{
+  fadeRcvTime = millis();
+  memcpy(wasRGB, curRGB, sizeof(curRGB));
+  String rgb = fadeStr.substring(0, 7);
+  parseRGB(rgb);
+  memcpy(toRGB, curRGB, sizeof(curRGB));
+  String fadeTimeStr = fadeStr.substring(fadeStr.indexOf(";")+1);
+  fadeTime = fadeTimeStr.toInt();
+  #if DEBUG
+    Serial.print("fading to " + rgb + " in " + fadeTime + " ms");
+  #endif
+}
+
+void fadeLoop()
+{
+  if(millis() - fadeRcvTime <= fadeTime)
+  {
+    if(millis() - lastFadePWMMillis >= 1) //run every ms
+    {
+      lastFadePWMMillis = millis();
+      for(int i = 0; i < 3; ++i)
+      {
+        int colDiff = toRGB[i] - wasRGB[i];
+        int timeDiff = millis() - fadeRcvTime;
+        float fadeProgress = ((float)timeDiff / fadeTime);
+        curRGB[i] = wasRGB[i] + fadeProgress * colDiff; //set currentRGB value based on progress of fade
+      }
+      setParsedRGB();
+    }
+  }
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -81,7 +140,15 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   else if (String(topic) == subscriptions[1])
   {
-    setRGB(data);
+    parseRGB(data);
+    setParsedRGB();
+    #if DEBUG
+      Serial.println("Setting RGB " + data);
+    #endif
+  }
+  else if (String(topic) == subscriptions[2])
+  {
+    parseFade(data);
   }
 
   mqttClient.loop();
@@ -108,8 +175,10 @@ void setup_wifi() {
   digitalWrite(BUILTIN_LED, HIGH);
   Serial.println("");
   Serial.println("WiFi connected");
-  Serial.println("IP address: ");
+  Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  Serial.print("MAC adress: ");
+  Serial.println(thisMAC);
 }
 
 
@@ -139,6 +208,38 @@ void mqttReconnect() {
   }
 }
 
+void setupOTA()
+{
+  // Port defaults to 8266
+  ArduinoOTA.setPort(8266);
+
+  // Hostname defaults to MAC address
+  ArduinoOTA.setHostname(("RGB-ESP " + WiFi.macAddress()).c_str());
+
+  // No authentication by default
+  ArduinoOTA.setPassword(OTA_pass);
+
+  ArduinoOTA.onStart([]() {
+    Serial.println("[OTA] Start");
+  });
+  ArduinoOTA.onEnd([]() {
+    Serial.println("\n[OTA] End");
+  });
+  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+    Serial.printf("[OTA] Progress: %u%%\r", (progress / (total / 100)));
+  });
+  ArduinoOTA.onError([](ota_error_t error) {
+    Serial.printf("[OTA] Error[%u]: ", error);
+    if (error == OTA_AUTH_ERROR) Serial.println("[OTA] Auth Failed");
+    else if (error == OTA_BEGIN_ERROR) Serial.println("[OTA] Begin Failed");
+    else if (error == OTA_CONNECT_ERROR) Serial.println("[OTA] Connect Failed");
+    else if (error == OTA_RECEIVE_ERROR) Serial.println("[OTA] Receive Failed");
+    else if (error == OTA_END_ERROR) Serial.println("[OTA] End Failed");
+  });
+  ArduinoOTA.begin();
+  Serial.println("[OTA] ready");
+}
+
 
 void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
@@ -150,6 +251,7 @@ void setup() {
   analogWriteFreq(200);
   Serial.begin(115200);
   setup_wifi();
+  setupOTA();
   mqttClient.setServer(mqtt_server, 1883);
   mqttClient.setCallback(callback);
   mqttReconnect();
@@ -158,9 +260,10 @@ void setup() {
 
 
 void loop() {
-
+  ArduinoOTA.handle();
   if (!mqttClient.connected()) {
     mqttReconnect();
   }
   mqttClient.loop();
+  fadeLoop();
 }
