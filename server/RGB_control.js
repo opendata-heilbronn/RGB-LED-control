@@ -31,7 +31,7 @@ var domain = "RGB-LED-control";
 var topicRegistration = domain + "/registration";
 var topicACK = domain + "/ack/+";
 var topicControl = domain + "/data/RGB/";
-var topicFade = domain + "/data/fade/"
+var topicFade = domain + "/data/fade/";
 
 var devices = {
   "5C:CF:7F:1B:6F:85": {room: 1},
@@ -47,6 +47,10 @@ var devices = {
   "5C:CF:7F:88:1A:13": {room: 11},
   "18:FE:34:D4:2E:BD": {room: 12},
 };
+
+// deviceObjs is for properties that can't be serialized to json, e.g. intervals
+var deviceObjs = {};
+Object.keys(devices).forEach(device => deviceObjs[device] = {});
 
 var sets = {
   "all": Object.keys(devices),
@@ -81,17 +85,30 @@ function rgbArrToStr(rgb)
   return rgbString;
 }
 
-var hue = 0;
-function party()
+function startParty(mac)
 {
-  var rgb = hsl2rgb(hue, 100, 100);
+    stopInterval(mac);
+    deviceObjs[mac].interval = setInterval(function () { party(mac) }, 180);
+}
+
+
+function stopInterval(mac)
+{
+    if(deviceObjs[mac].interval) {
+        clearInterval(deviceObjs[mac].interval);
+        deviceObjs[mac].interval = null;
+    }
+}
+
+function party(mac)
+{
+  if(!devices[mac].hue) devices[mac].hue = 0;
+  var rgb = hsl2rgb(devices[mac].hue, 100, 100);
   var rgbString = rgbArrToStr(rgb);
-  //console.log(rgbString);
-  //sendRGB(0, rgbString);
-  sendFade(0, rgbString, 30);
-  hue+=5;
-  if (hue >= 360)
-    hue = 0;
+  sendFade(mac, rgbString, 180);
+  devices[mac].hue+=5;
+  if (devices[mac].hue >= 360)
+    devices[mac].hue = 0;
 }
 
 const sendDevices = () => {
@@ -99,14 +116,13 @@ const sendDevices = () => {
 };
 
 client.on('connect', function () {
+    console.log('connect');
   client.subscribe(topicRegistration);
   client.subscribe(topicACK);
-  //setInterval(party, 30);
-  sendRGB(0, "#FFFFFF");
-  //sendFade(0, "#000000", 500); //fade to #123456 in 500 ms
 });
 
 client.on('message', function(topic, message) {
+    console.log('message received');
   if(topic == topicRegistration) {
     const split = message.toString().split(';');
     if(split[1]) devices[split[0]].version = split[1];
@@ -140,4 +156,4 @@ function keepalive() {
 setInterval(keepalive, 5000);
 setInterval(sendDevices, 10000);
 
-module.exports = { devices, sets, sendRGB, sendFade };
+module.exports = { devices, sets, sendRGB, sendFade, startParty, stopInterval };
