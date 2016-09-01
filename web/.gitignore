@@ -3,4 +3,3 @@
 *.iml
 node_modules
 config.json
-bin
