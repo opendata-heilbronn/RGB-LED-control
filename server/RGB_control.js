@@ -21,9 +21,9 @@ console.log = function(d) { //
   log_stdout.write(util.format(d) + '\n');
 };
 
-//REST API stuff
-//var app = express();
-
+//SOCKET
+const server = require('./server');
+const io = server.io;
 
 //MQTT stuff
 var client  = mqtt.connect('mqtt://192.168.178.168');
@@ -87,6 +87,9 @@ function party()
     hue = 0;
 }
 
+const sendDevices = () => {
+  io.emit('devices', devices);
+};
 
 client.on('connect', function () {
   client.subscribe(topicRegistration);
@@ -98,14 +101,16 @@ client.on('connect', function () {
 
 client.on('message', function(topic, message) {
   if(topic == topicRegistration) {
-    const split = message.split(';');
+    const split = message.toString().split(';');
     if(split[1]) devices[split[0]].version = split[1];
     console.log("New registration from MAC " + split[0] + ', Version: ' + split[1]);
   }
   else if (topic.substr(0, topicACK.length-1) == topicACK.substr(0, topicACK.length-1)) { //check if topic is ACK
     var mac = topic.split("/").pop();
-    if(devices[mac].isOnline == false)
+    if(devices[mac].isOnline == false) {
       console.log("Node " + mac + " went back online");
+      sendDevices();
+    }
     devices[mac].isOnline = true;
     devices[mac].lastSeen = Date.now();
   }
@@ -115,13 +120,15 @@ function keepalive() {
   client.publish("RGB-LED-control/keepalive", Date.now().toString());
   Object.keys(devices).forEach(function (key) {
     if(devices[key].lastSeen + 15000 < Date.now()) {
-      if(devices[key].isOnline == true)
+      if(devices[key].isOnline == true) {
         console.log("Node " + key + " went offline");
+        sendDevices();
+      }
       devices[key].isOnline = false;
     }
 });
 }
 setInterval(keepalive, 5000);
-
+setInterval(sendDevices, 10000);
 
 module.exports = { devices, sendRGB, sendFade };

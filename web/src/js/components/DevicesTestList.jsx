@@ -5,36 +5,21 @@ import PlayIcon from "material-ui/svg-icons/av/play-arrow";
 import {showNotification} from "../actions/notificationActions";
 import {connect} from "react-redux";
 import PageLoadingIndicator from "./utils/PageLoadingIndicator";
-import {Card, CardTitle, CardText} from 'material-ui/Card';
-import Avatar from 'material-ui/Avatar';
-import OnlineIcon from 'material-ui/svg-icons/navigation/check';
-import OfflineIcon from 'material-ui/svg-icons/navigation/close';
-import {green500, lightBlack} from 'material-ui/styles/colors';
-import moment from 'moment';
+import {Card, CardTitle, CardText} from "material-ui/Card";
+import Avatar from "material-ui/Avatar";
+import OnlineIcon from "material-ui/svg-icons/navigation/check";
+import OfflineIcon from "material-ui/svg-icons/navigation/close";
+import {green500, lightBlack} from "material-ui/styles/colors";
+import { fetchIfNeeded } from '../actions/devicesActions';
+import moment from "moment";
 moment.locale('de');
 
 const formatDate = (ts) => {
-    if(!ts) return '-';
+    if (!ts) return '-';
     return moment(ts).format('DD.MM.YY HH:mm:ss');
 };
 
 class DevicesTestList extends Component {
-    state = {devices: {}};
-
-    updateData() {
-        const {dispatch} = this.props;
-        this.setState({loading: true});
-        axios.get('/api/devices')
-            .then((response) => {
-                this.setState({loading: false, devices: response.data})
-            })
-            .catch((error) => {
-                console.trace(error.stack);
-                this.setState({loading: false});
-                dispatch(showNotification(error.message));
-            });
-    }
-
     onDeviceClick(mac) {
         const {dispatch} = this.props;
         axios.post(`/api/devices/${mac}/rgb`, {
@@ -53,26 +38,28 @@ class DevicesTestList extends Component {
             })
             .catch((error) => {
                 console.trace(error.stack);
-                this.setState({loading: false});
                 dispatch(showNotification(error.message));
             });
     }
 
     componentWillMount() {
-        this.updateData();
+        const { dispatch } = this.props;
+        dispatch(fetchIfNeeded());
     }
 
     renderDeviceItems() {
-        const {devices} = this.state;
-        return Object.keys(devices).map(mac => {
-            const device = devices[mac];
-            const avatar = device.isOnline ? <Avatar icon={<OnlineIcon />} backgroundColor={green500} /> : <Avatar icon={<OfflineIcon />} backgroundColor={lightBlack} />;
+        const {items} = this.props;
+        return Object.keys(items).map(mac => {
+            const device = items[mac];
+            const avatar = device.isOnline ? <Avatar icon={<OnlineIcon />} backgroundColor={green500}/> :
+                <Avatar icon={<OfflineIcon />} backgroundColor={lightBlack}/>;
             return <ListItem
                 key={mac}
                 leftAvatar={avatar}
                 rightIcon={<PlayIcon />}
                 primaryText={`Raum ${device.room}`}
-                secondaryText={<p>{mac}<br />{formatDate(device.lastSeen)}</p>}
+                secondaryText={<p>{mac}{device.version ? ', ' + device.version : ''}<br />{formatDate(device.lastSeen)}
+                </p>}
                 secondaryTextLines={2}
                 onClick={this.onDeviceClick.bind(this, mac)}
             />;
@@ -80,17 +67,17 @@ class DevicesTestList extends Component {
     }
 
     getContent(deviceItems) {
-        if (this.state.loading) {
+        if (this.props.isFetching) {
             return <PageLoadingIndicator />
         } else {
             return <Card>
-                    <CardTitle title="Ansteuerung testen" subtitle="einzeln je Raum" />
-                    <CardText>
-                        <List>
-                            {deviceItems}
-                        </List>
-                    </CardText>
-                </Card>;
+                <CardTitle title="Ansteuerung testen" subtitle="einzeln je Raum"/>
+                <CardText>
+                    <List>
+                        {deviceItems}
+                    </List>
+                </CardText>
+            </Card>;
         }
     }
 
@@ -106,4 +93,6 @@ class DevicesTestList extends Component {
     }
 }
 
-export default connect(() => ({}))(DevicesTestList)
+const mapStateToProps = (state) => state.devices ? state.devices : {isFetching: false, items: {}};
+
+export default connect(mapStateToProps)(DevicesTestList)
