@@ -36,7 +36,12 @@ class DeviceControl extends Component {
 
     getMenuItems() {
         const {items} = this.props;
-        const menuItems = [<MenuItem key={'all'} value={'all'} primaryText={`Alle Räume`} />];
+        const menuItems = [
+            <MenuItem key={'all'} value={'all'} primaryText={`Alle Räume`} />,
+            <MenuItem key={'segment1'} value={'segment1'} primaryText={`Abschnitt 1`} />,
+            <MenuItem key={'segment2'} value={'segment2'} primaryText={`Abschnitt 2`} />,
+            <MenuItem key={'segment3'} value={'segment3'} primaryText={`Abschnitt 3`} />
+        ];
         Object.keys(items).forEach(mac => {
             const macString = mac.toString();
             const device = items[macString];

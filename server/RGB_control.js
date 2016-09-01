@@ -48,6 +48,13 @@ var devices = {
   "18:FE:34:D4:2E:BD": {room: 12},
 };
 
+var sets = {
+  "all": Object.keys(devices),
+  "segment1": Object.keys(devices).slice(0, 4),
+  "segment2": Object.keys(devices).slice(4, 8),
+  "segment3": Object.keys(devices).slice(8)
+};
+
 function sendRGB(mac, rgb)
 {
   client.publish(topicControl + mac, rgb);
@@ -133,4 +140,4 @@ function keepalive() {
 setInterval(keepalive, 5000);
 setInterval(sendDevices, 10000);
 
-module.exports = { devices, sendRGB, sendFade };
+module.exports = { devices, sets, sendRGB, sendFade };
