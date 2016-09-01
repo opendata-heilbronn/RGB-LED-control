@@ -110,6 +110,7 @@ client.on('message', function(topic, message) {
     if(devices[mac].isOnline == false) {
       console.log("Node " + mac + " went back online");
       sendDevices();
+      io.emit('deviceUpdate', {key, status: 'online'});
     }
     devices[mac].isOnline = true;
     devices[mac].lastSeen = Date.now();
@@ -123,6 +124,7 @@ function keepalive() {
       if(devices[key].isOnline == true) {
         console.log("Node " + key + " went offline");
         sendDevices();
+        io.emit('deviceUpdate', {key, status: 'offline'});
       }
       devices[key].isOnline = false;
     }

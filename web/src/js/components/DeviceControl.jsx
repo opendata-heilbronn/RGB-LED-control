@@ -10,7 +10,7 @@ import PageLoadingIndicator from "./utils/PageLoadingIndicator";
 import {Card, CardTitle, CardText} from "material-ui/Card";
 
 class DeviceControl extends Component {
-    state = {};
+    state = {device: 'all'};
 
     onSubmit(color) {
         const {dispatch} = this.props;
@@ -36,11 +36,13 @@ class DeviceControl extends Component {
 
     getMenuItems() {
         const {items} = this.props;
-        return Object.keys(items).map(mac => {
+        const menuItems = [<MenuItem key={'all'} value={'all'} primaryText={`Alle Räume`} />];
+        Object.keys(items).forEach(mac => {
             const macString = mac.toString();
             const device = items[macString];
-            return <MenuItem key={macString} value={macString} primaryText={`Raum ${device.room} (${device.isOnline ? 'online' : 'offline'})`} />;
-        })
+            menuItems.push(<MenuItem key={macString} value={macString} primaryText={`Raum ${device.room} (${device.isOnline ? 'online' : 'offline'})`} />);
+        });
+        return menuItems;
     }
 
     handleDeviceChange = (event, index, value) => {
@@ -59,7 +61,7 @@ class DeviceControl extends Component {
         } else {
             const menuItems = this.getMenuItems();
             return <Card>
-                <CardTitle title="Einzelne Farbe setzen" />
+                <CardTitle title="Farbe setzen" />
                 <CardText>
                     <SelectField value={this.state.device} onChange={this.handleDeviceChange.bind(this)} style={{marginBottom:'1rem'}}>
                         {menuItems}

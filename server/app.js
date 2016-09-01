@@ -1,3 +1,4 @@
+"use strict";
 const server = require('./server');
 const app = server.app;
 const rgbControls = require('./RGB_control');
@@ -8,5 +9,9 @@ app.get('/api/devices', function (req, res) {
 
 app.post('/api/devices/:mac/rgb', function (req, res) {
     if (!req.body.color) res.status(500).send('no color');
-    res.send(rgbControls.sendFade(req.params.mac, req.body.color, 200));
+    let macs = [req.params.mac];
+    if (req.params.mac === 'all') {
+        macs = Object.keys(rgbControls.devices);
+    }
+    macs.forEach(mac => res.send(rgbControls.sendFade(mac, req.body.color, 200)));
 });

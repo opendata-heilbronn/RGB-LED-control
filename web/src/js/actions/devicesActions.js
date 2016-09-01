@@ -1,5 +1,6 @@
 import axios from "axios";
 import {INVALIDATE_DEVICES, RECEIVE_DEVICES, REQUEST_DEVICES} from './types';
+import {showNotification} from './notificationActions';
 import io from 'socket.io-client';
 
 export function invalidate() {
@@ -28,8 +29,12 @@ function fetch() {
         const socket = io('http://localhost:3000/');
         socket.on('connect', () => {console.log('connected to socket.io')});
         socket.on('devices', (data) => {
-            console.log('receieved socket.io update', data);
+            console.log('received socket.io devices update', data);
             dispatch(receive(data));
+        });
+        socket.on('deviceUpdate', (data) => {
+            console.log('received socket.io device update', data);
+            dispatch(showNotification(`${data.key} ist nun ${data.status}`));
         });
         return axios.get('/api/devices')
             .then(response => dispatch(receive(response.data)))
