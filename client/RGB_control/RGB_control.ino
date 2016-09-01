@@ -9,10 +9,17 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
+#include <sstream>
 
 #include "config.h" //set your SSID and pass here
 
 #define DEBUG false //debug output
+
+const uint8_t r1Pin = D1,
+              g1Pin = D2,
+              b1Pin = D3;
+
+//const uint8_t ledPins[] = {r1Pin, g1Pin, b1Pin};
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
@@ -37,9 +44,22 @@ void registration()
   mqttClient.publish("RGB-LED-control/registration", thisMAC.c_str());
 }
 
+
 void setRGB(String rgb)
 {
   Serial.println("Setting RGB " + rgb);
+
+  // Get rid of '#' and convert it to integer
+  int number = (int) strtol( &rgb[1], NULL, 16);
+  Serial.println(number);
+
+  // Split them up into r, g, b values
+  int r = number >> 16;
+  int g = number >> 8 & 0xFF;
+  int b = number & 0xFF;
+  analogWrite(r1Pin, r * 4);
+  analogWrite(g1Pin, g * 4);
+  analogWrite(b1Pin, b * 4);
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -123,6 +143,11 @@ void mqttReconnect() {
 void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
   digitalWrite(BUILTIN_LED, HIGH);
+
+  pinMode(r1Pin, OUTPUT);
+  pinMode(g1Pin, OUTPUT);
+  pinMode(b1Pin, OUTPUT);
+  analogWriteFreq(200);
   Serial.begin(115200);
   setup_wifi();
   mqttClient.setServer(mqtt_server, 1883);

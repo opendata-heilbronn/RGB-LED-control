@@ -9,7 +9,9 @@
 
 var fs = require('fs');
 var util = require('util');
-var mqtt    = require('mqtt');
+var mqtt = require('mqtt');
+//var express = require('express');
+var hsl2rgb = require('hsv-rgb');
 
 //additionally write console.log to log file
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
@@ -19,6 +21,11 @@ console.log = function(d) { //
   log_stdout.write(util.format(d) + '\n');
 };
 
+//REST API stuff
+//var app = express();
+
+
+//MQTT stuff
 var client  = mqtt.connect('mqtt://localhost');
 var domain = "RGB-LED-control";
 var topicRegistration = domain + "/registration";
@@ -27,7 +34,8 @@ var topicControl = domain + "/data/RGB/";
 
 var accessTable = [ //define order of controllers (by MAC)
   "5C:CF:7F:8B:F0:70",
-  "5C:CF:7F:8B:C9:C4"
+  "5C:CF:7F:8B:C9:C4",
+  "18:FE:34:D3:F5:7F"
 ]
 var onlineStatus = {}
 
@@ -37,11 +45,31 @@ function sendRGB(id, rgb)
   client.publish(topicControl + accessTable[id], rgb);
 }
 
+function dec2hex(i) {
+   return (i+0x100).toString(16).substr(-2).toUpperCase();
+}
+
+var hue = 0;
+function party()
+{
+  var rgb = hsl2rgb(hue, 100, 100);
+  var rgbString = "#";
+  rgbString += dec2hex(rgb[0]);
+  rgbString += dec2hex(rgb[1]);
+  rgbString += dec2hex(rgb[2]);
+  //console.log(rgbString);
+  sendRGB(2, rgbString);
+  hue+=5;
+  if (hue >= 361)
+    hue = 0;
+}
+
 
 client.on('connect', function () {
   client.subscribe(topicRegistration);
   client.subscribe(topicACK);
-  sendRGB(1, "0xAABBCC")
+  setInterval(party, 30);
+  sendRGB(2, "#FFFFFF")
 });
 
 client.on('message', function(topic, message) {
