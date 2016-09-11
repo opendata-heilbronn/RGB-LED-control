@@ -1,10 +1,14 @@
 "use strict";
-import React from 'react';
-import DevicesTestList from '../components/DevicesTestList';
+import React from "react";
+import DevicesTestList from "../components/DevicesTestList";
+import DeviceControl from "../components/DeviceControl";
 
 const DevicesPage = () => {
     return (
-        <DevicesTestList />
+        <div>
+            <DevicesTestList />
+            <DeviceControl />
+        </div>
     )
 };
 

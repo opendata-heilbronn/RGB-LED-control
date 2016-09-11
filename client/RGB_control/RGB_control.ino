@@ -18,6 +18,7 @@
 #include "gammaTable.h"
 #include "config.h" //set your SSID and pass here
 
+
 #define DEBUG false //debug output
 String Version = "v0.0.1";
 

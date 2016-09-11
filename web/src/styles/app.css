@@ -7,3 +7,7 @@ body, html {
     max-width: 1200px;
     margin: 0 auto;
 }
+
+.main {
+    padding: 1rem;
+}
