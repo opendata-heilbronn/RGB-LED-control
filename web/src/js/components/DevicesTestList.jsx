@@ -10,9 +10,21 @@ import Avatar from "material-ui/Avatar";
 import OnlineIcon from "material-ui/svg-icons/navigation/check";
 import OfflineIcon from "material-ui/svg-icons/navigation/close";
 import {lightBlack} from "material-ui/styles/colors";
-import { fetchIfNeeded } from '../actions/devicesActions';
+import {fetchIfNeeded} from "../actions/devicesActions";
 import moment from "moment";
 moment.locale('de');
+
+const testColor = (color, label, mac, dispatch, timeout) => {
+    return axios.post(`/api/devices/${mac}/rgb`, {
+        color
+    })
+        .then(() => {
+            dispatch(showNotification(`${mac} leuchtet nun 2s lang ${label}`));
+            return new Promise(resolve => {
+                setTimeout(resolve, timeout);
+            });
+        })
+};
 
 const formatDate = (ts) => {
     if (!ts) return '-';
@@ -22,18 +34,16 @@ const formatDate = (ts) => {
 class DevicesTestList extends Component {
     onDeviceClick(mac) {
         const {dispatch} = this.props;
-        axios.post(`/api/devices/${mac}/rgb`, {
-            color: '#0000FF'
-        })
+        testColor('#FF0000', 'rot', mac, dispatch, 2000)
             .then(() => {
-                dispatch(showNotification(`${mac} leuchtet nun 2s lang blau`));
-                return new Promise(resolve => {
-                    setTimeout(resolve, 2000);
-                });
+                return testColor('#00FF00', 'grün', mac, dispatch, 2000)
+            })
+            .then(() => {
+                return testColor('#0000FF', 'blau', mac, dispatch, 2000)
             })
             .then(() => {
                 return axios.post(`/api/devices/${mac}/rgb`, {
-                    color: '#000000'
+                    color: '#FFFFFF'
                 })
             })
             .catch((error) => {
@@ -43,7 +53,7 @@ class DevicesTestList extends Component {
     }
 
     componentWillMount() {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(fetchIfNeeded());
     }
 
@@ -51,8 +61,8 @@ class DevicesTestList extends Component {
         const {items} = this.props;
         return Object.keys(items).map(mac => {
             const device = items[mac];
-            console.log(device.color);
-            const avatar = device.isOnline ? <Avatar icon={<OnlineIcon />} backgroundColor={device.color ? device.color : '#000'}/> :
+            const avatar = device.isOnline ?
+                <Avatar icon={<OnlineIcon />} backgroundColor={device.color ? device.color : '#000'}/> :
                 <Avatar icon={<OfflineIcon />} backgroundColor={lightBlack}/>;
             return <ListItem
                 key={mac}
