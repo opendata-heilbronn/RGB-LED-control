@@ -26,7 +26,7 @@ function receive(json) {
 function fetch() {
     return dispatch => {
         dispatch(request());
-        const socket = io('http://192.168.178.168:3000/');
+        const socket = io('http://' + window.location.hostname + ':3000/');
         socket.on('connect', () => {console.log('connected to socket.io')});
         socket.on('devices', (data) => {
             console.log('received socket.io devices update', data);
