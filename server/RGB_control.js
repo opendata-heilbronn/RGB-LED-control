@@ -63,6 +63,7 @@ var sets = {
 function sendRGB(mac, rgb) {
     devices[mac].color = rgb;
     client.publish(topicControl + mac, rgb);
+    sendDevices();
     console.log(mac + " <set " + rgb);
 }
 
@@ -71,6 +72,7 @@ function sendFade(mac, rgb, fadeTime) //
     devices[mac].color = rgb;
     var fadeStr = rgb + ";" + fadeTime;
     client.publish(topicFade + mac, fadeStr);
+    sendDevices();
     console.log(mac + " <fade " + rgb + " in " + fadeTime + "ms");
 }
 
