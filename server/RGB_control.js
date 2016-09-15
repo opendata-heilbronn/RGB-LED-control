@@ -66,6 +66,7 @@ function sendRGB(mac, rgb) {
 
 function sendFade(mac, rgb, fadeTime) //
 {
+    devices[mac].color = rgb;
     var fadeStr = rgb + ";" + fadeTime;
     client.publish(topicFade + mac, fadeStr);
     console.log(mac + " <fade " + rgb + " in " + fadeTime + "ms");
