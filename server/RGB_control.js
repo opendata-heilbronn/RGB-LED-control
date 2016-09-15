@@ -50,7 +50,7 @@ var devices = {
 
 // deviceObjs is for properties that can't be serialized to json, e.g. intervals
 var deviceObjs = {};
-Object.keys(devices).sort().forEach(device => deviceObjs[device] = {});
+Object.keys(devices).forEach(device => deviceObjs[device] = {});
 
 var sets = {
     "all": Object.keys(devices),
