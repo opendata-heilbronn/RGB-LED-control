@@ -45,7 +45,7 @@ class DeviceControl extends Component {
         Object.keys(items).forEach(mac => {
             const macString = mac.toString();
             const device = items[macString];
-            menuItems.push(<MenuItem key={macString} value={macString} primaryText={`Raum ${device.room} (${device.isOnline ? 'online' : 'offline'})`} />);
+            menuItems.push(<MenuItem key={macString} value={macString} primaryText={`Raum ${device.room}${device.isOnline ? '' : ' (offline)'}`} />);
         });
         return menuItems;
     }
