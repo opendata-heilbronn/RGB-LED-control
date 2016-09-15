@@ -34,18 +34,18 @@ var topicControl = domain + "/data/RGB/";
 var topicFade = domain + "/data/fade/";
 
 var devices = {
-    "5C:CF:7F:1B:6F:85": {room: 1},
-    "5C:CF:7F:8B:F0:70": {room: 2},
-    "5C:CF:7F:8B:C9:C4": {room: 3},
-    "5C:CF:7F:88:1B:28": {room: 4},
-    "18:FE:34:D3:F5:7F": {room: 5},
-    "5C:CF:7F:88:1D:A0": {room: 6},
-    "18:FE:34:CC:FC:EA": {room: 7},
-    "5C:CF:7F:88:1B:5D": {room: 8},
-    "5C:CF:7F:88:1E:04": {room: 9},
-    "5C:CF:7F:8B:C5:03": {room: 10},
-    "5C:CF:7F:88:1A:13": {room: 11},
-    "18:FE:34:D4:2E:BD": {room: 12},
+    "5C:CF:7F:1B:6F:85": {room: 6},
+    "5C:CF:7F:8B:F0:70": {room: 5}, //Leandros nodeMCU
+    "5C:CF:7F:8B:C9:C4": {room: 83},
+    "5C:CF:7F:88:1B:28": {room: 84},
+    "18:FE:34:D3:F5:7F": {room: 4},
+    "5C:CF:7F:88:1D:A0": {room: 12},
+    "18:FE:34:CC:FC:EA": {room: 87},
+    "5C:CF:7F:88:1B:5D": {room: 3},
+    "5C:CF:7F:88:1E:04": {room: 14},
+    "5C:CF:7F:8B:C5:03": {room: 90},
+    "5C:CF:7F:88:1A:13": {room: 8},
+    "18:FE:34:D4:2E:BD": {room: 2},
 };
 
 // deviceObjs is for properties that can't be serialized to json, e.g. intervals

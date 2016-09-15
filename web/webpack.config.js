@@ -33,6 +33,7 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, 'src'),
         port: 8082,
+	host: '0.0.0.0',
         historyApiFallback: true,
         proxy: {
             '/api': {
