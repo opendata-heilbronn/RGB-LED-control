@@ -60,6 +60,7 @@ var sets = {
 };
 
 function sendRGB(mac, rgb) {
+    devices[mac].color = rgb;
     client.publish(topicControl + mac, rgb);
     console.log(mac + " <set " + rgb);
 }
