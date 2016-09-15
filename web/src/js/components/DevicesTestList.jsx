@@ -9,7 +9,7 @@ import {Card, CardTitle, CardText} from "material-ui/Card";
 import Avatar from "material-ui/Avatar";
 import OnlineIcon from "material-ui/svg-icons/navigation/check";
 import OfflineIcon from "material-ui/svg-icons/navigation/close";
-import {green500, lightBlack} from "material-ui/styles/colors";
+import {lightBlack} from "material-ui/styles/colors";
 import { fetchIfNeeded } from '../actions/devicesActions';
 import moment from "moment";
 moment.locale('de');
@@ -51,7 +51,8 @@ class DevicesTestList extends Component {
         const {items} = this.props;
         return Object.keys(items).map(mac => {
             const device = items[mac];
-            const avatar = device.isOnline ? <Avatar icon={<OnlineIcon />} backgroundColor={green500}/> :
+            console.log(device.color);
+            const avatar = device.isOnline ? <Avatar icon={<OnlineIcon />} backgroundColor={device.color ? device.color : '#000'}/> :
                 <Avatar icon={<OfflineIcon />} backgroundColor={lightBlack}/>;
             return <ListItem
                 key={mac}
