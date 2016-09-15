@@ -42,11 +42,12 @@ var devices = {
     "5C:CF:7F:1B:6F:85": {room: 6},
     "5C:CF:7F:8B:C5:03": {room: 7},
     "5C:CF:7F:88:1A:13": {room: 8},
+    "5C:CF:7F:8B:EF:42": {room: 9},
+    "18:FE:34:D3:F0:B2": {room: 10},
     "5C:CF:7F:8B:C6:AA": {room: 11},
     "5C:CF:7F:88:1D:A0": {room: 12},
+    "18:FE:34:E1:AF:AD": {room: 13},
     "5C:CF:7F:88:1E:04": {room: 14},
-    "5C:CF:7F:8B:C9:C4": {room: 83},
-    "5C:CF:7F:88:1B:28": {room: 84},
 };
 
 // deviceObjs is for properties that can't be serialized to json, e.g. intervals
