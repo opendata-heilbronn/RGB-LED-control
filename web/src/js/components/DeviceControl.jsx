@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import axios from "axios";
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import { SketchPicker } from 'react-color';
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+import RaisedButton from "material-ui/RaisedButton";
+import {SketchPicker} from "react-color";
 import {showNotification} from "../actions/notificationActions";
 import {fetchIfNeeded} from "../actions/devicesActions";
 import {connect} from "react-redux";
@@ -60,8 +60,8 @@ class DeviceControl extends Component {
         else this.props.dispatch(showNotification('Kein Raum ausgewählt'))
     };
 
-    startParty = () => {
-        if(this.state.device) this.onSubmit('party');
+    startEffect = (effect) => {
+        if (this.state.device) this.onSubmit(effect);
         else this.props.dispatch(showNotification('Kein Raum ausgewählt'))
     };
 
@@ -77,7 +77,10 @@ class DeviceControl extends Component {
                         {menuItems}
                     </SelectField>
                     <SketchPicker type="sketch" color={ this.state.color } onChangeComplete={this.handleColorChange.bind(this)} />
-                    <RaisedButton label="Party" primary={true} style={{marginTop: '1rem'}} onClick={this.startParty.bind(this)} />
+                    <RaisedButton label="Party" primary={true} style={{margin: '1rem 1rem 0 0'}}
+                                  onClick={this.startEffect.bind(this, 'party')}/>
+                    <RaisedButton label="Lighthouse" primary={true} style={{marginTop: '1rem'}}
+                                  onClick={this.startEffect.bind(this, 'lighthouse')}/>
                 </CardText>
             </Card>;
         }

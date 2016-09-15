@@ -26,8 +26,6 @@ class StartStopControl extends Component {
                 <Card>
                     <CardTitle title="Master Control" subtitle="Alle Räume ..."/>
                     <CardText>
-                        <RaisedButton label="An" primary={true} style={{marginRight: '1rem'}}
-                                      onClick={this.sendState.bind(this, true)}/>
                         <RaisedButton label="Aus" primary={true}
                                       onClick={this.sendState.bind(this, false)}/>
                     </CardText>
