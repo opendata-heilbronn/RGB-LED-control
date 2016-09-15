@@ -33,6 +33,8 @@ var topicACK = domain + "/ack/+";
 var topicControl = domain + "/data/RGB/";
 var topicFade = domain + "/data/fade/";
 
+var masterOverride = 1;
+
 var devices = {
     "18:FE:34:CC:FC:EA": {room: 1},
     "18:FE:34:D4:2E:BD": {room: 2},
@@ -73,8 +75,18 @@ function sendFade(mac, rgb, fadeTime) //
     devices[mac].color = rgb;
     var fadeStr = rgb + ";" + fadeTime;
     client.publish(topicFade + mac, fadeStr);
-    sendDevices();
     console.log(mac + " <fade " + rgb + " in " + fadeTime + "ms");
+}
+
+function setMasterOverride(state)
+{
+  masterOverride = state;
+  if(masterOverride == 0)
+  {
+    Object.keys(devices).forEach(function(key){
+      sendFade(key, "#000000", 1000);
+    });
+  }
 }
 
 function dec2hex(i) {
@@ -112,6 +124,25 @@ function party(mac) {
     devices[mac].hue += 5;
     if (devices[mac].hue >= 360)
         devices[mac].hue = 0;
+}
+
+
+function startLighthouse()
+{
+  setInterval(lightHouseTick, 500);
+}
+
+var lightHouseIdx = 0;
+var prevColor;
+function lightHouseTick()
+{
+  var macs = Object.keys(devices);
+  var prevMAC = macs[lightHouseIdx%14];
+  var curMAC = macs[(lightHouseIdx+1)%14]; //handle overflow
+  sendFade(prevMAC, prevColor, 250);
+  prevColor = devices[curMAC].color;
+  sendFade(curMAC, "#FFFFFF", 250);
+  lightHouseIdx++;
 }
 
 const sendDevices = () => {
@@ -167,4 +198,4 @@ function keepalive() {
 setInterval(keepalive, 5000);
 setInterval(sendDevices, 10000);
 
-module.exports = {devices, sets, sendRGB, sendFade, startParty, stopInterval};
+module.exports = {devices, sets, sendRGB, sendFade, startParty, stopInterval, sendDevices, setMasterOverride, startLighthouse};
