@@ -42,6 +42,7 @@ var devices = {
     "5C:CF:7F:1B:6F:85": {room: 6},
     "5C:CF:7F:8B:C5:03": {room: 7},
     "5C:CF:7F:88:1A:13": {room: 8},
+    "18:FE:34:D3:F0:B2": {room: 10},
     "5C:CF:7F:8B:C6:AA": {room: 11},
     "5C:CF:7F:88:1D:A0": {room: 12},
     "5C:CF:7F:88:1E:04": {room: 14},
