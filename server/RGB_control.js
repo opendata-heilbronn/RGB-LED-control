@@ -12,6 +12,7 @@ var util = require('util');
 var mqtt = require('mqtt');
 //var express = require('express');
 var hsl2rgb = require('hsv-rgb');
+var cronJob = require('cron').CronJob;
 
 //additionally write console.log to log file
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags: 'a'});
@@ -52,6 +53,9 @@ var devices = {
     "5C:CF:7F:88:1E:04": {room: 14},
 };
 
+new cronJob('00 00 07 * * *', function() {setMasterOverride(0);}, null, true, 'Europe/Berlin');
+new cronJob('00 00 20 * * *', function() {setMasterOverride(1);}, null, true, 'Europe/Berlin');
+
 // deviceObjs is for properties that can't be serialized to json, e.g. intervals
 var deviceObjs = {};
 Object.keys(devices).forEach(device => deviceObjs[device] = {});
@@ -66,7 +70,6 @@ var sets = {
 function sendRGB(mac, rgb) {
     devices[mac].color = rgb;
     client.publish(topicControl + mac, rgb);
-    sendDevices();
     console.log(mac + " <set " + rgb);
 }
 
@@ -84,7 +87,14 @@ function setMasterOverride(state)
   if(masterOverride == 0)
   {
     Object.keys(devices).forEach(function(key){
-      sendFade(key, "#000000", 1000);
+      stopInterval(key); //stop party mode
+      sendFade(key, "#000000", 10000);
+    });
+  }
+  if(masterOverride == 1)
+  {
+    Object.keys(devices).forEach(function(key){
+      startParty(key); //start party mode
     });
   }
 }
