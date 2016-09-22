@@ -126,10 +126,19 @@ function party(mac) {
         devices[mac].hue = 0;
 }
 
-
+var lightHouseStarted = false;
+var lightHouseInterval;
 function startLighthouse()
 {
-  setInterval(lightHouseTick, 500);
+  if(!lightHouseStarted)
+  {
+    lightHouseStarted = true;
+    lightHouseInterval = setInterval(lightHouseTick, 500);
+  }
+  else {
+    lightHouseStarted = false;
+    clearInterval(lightHouseInterval);
+  }
 }
 
 var lightHouseIdx = 0;
