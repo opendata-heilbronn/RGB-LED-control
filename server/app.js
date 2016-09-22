@@ -28,6 +28,5 @@ app.post('/api/devices/:mac/rgb', function (req, res) {
 });
 
 app.post('/api/devices/masterOverride', function(req, res) { //{"state": 0/1}
-  if (!req.body.state) res.status(500).send('no state');
   rgbControls.setMasterOverride(req.body.state);
 })
