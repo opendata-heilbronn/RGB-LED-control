@@ -192,7 +192,7 @@ client.on('message', function (topic, message) {
         if (devices[mac].isOnline == false) {
             console.log("Node " + mac + " went back online");
             sendDevices();
-            io.emit('deviceUpdate', {key, status: 'online'});
+            io.emit('deviceUpdate', {mac, status: 'online'});
         }
         devices[mac].isOnline = true;
         devices[mac].lastSeen = Date.now();
