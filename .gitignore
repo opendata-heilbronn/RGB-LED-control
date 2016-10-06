@@ -40,3 +40,5 @@ jspm_packages
 config.h
 .idea
 *.iml
+
+bower_components/
