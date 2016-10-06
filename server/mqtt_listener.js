@@ -9,7 +9,7 @@
 
 
  var mqtt    = require('mqtt');
- var client  = mqtt.connect('mqtt://localhost');
+ var client  = mqtt.connect('mqtt://192.168.178.168');
  var channelName = "RGB-LED-control/broadcast";
 
  client.on('connect', function () {

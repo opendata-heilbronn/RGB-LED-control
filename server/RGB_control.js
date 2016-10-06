@@ -54,6 +54,15 @@ var devices = {
     "5C:CF:7F:88:1E:04": {room: 14},
 };
 
+var roomDevices = {}
+function convertDevicesToRooms()
+{
+  Object.keys(devices).forEach(function(key){
+    roomDevices[devices[key].room] = key;
+  });
+}
+convertDevicesToRooms();
+
 new cronJob('00 00 07 * * *', function() {setMasterOverride(0);}, null, true, 'Europe/Berlin');
 new cronJob('00 00 20 * * *', function() {setMasterOverride(1);}, null, true, 'Europe/Berlin');
 
@@ -80,6 +89,11 @@ function sendFade(mac, rgb, fadeTime) //
     var fadeStr = rgb + ";" + fadeTime;
     client.publish(topicFade + mac, fadeStr);
     console.log(mac + " <fade " + rgb + " in " + fadeTime + "ms");
+}
+
+function roomToMAC(roomNum)
+{
+  return roomDevices[roomNum];
 }
 
 function setMasterOverride(state)
@@ -216,4 +230,4 @@ function keepalive() {
 setInterval(keepalive, 5000);
 setInterval(sendDevices, 10000);
 
-module.exports = {devices, sets, sendRGB, sendFade, startParty, stopInterval, sendDevices, setMasterOverride, startLighthouse};
+module.exports = {devices, sets, sendRGB, sendFade, startParty, stopInterval, sendDevices, setMasterOverride, startLighthouse, roomToMAC};
