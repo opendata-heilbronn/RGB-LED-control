@@ -2,7 +2,7 @@
 
 animations = {
     "anim1": [{
-        "frame": [{
+        "frameData": [{
             "room": 1,
             "color": "#123456",
             "fade": 0
@@ -13,7 +13,7 @@ animations = {
         }],
         "pause": 500
     }, {
-        "frame": [{
+        "frameData": [{
             "room": 1,
             "color": "#123456",
             "fade": 0
@@ -25,7 +25,7 @@ animations = {
         "pause": 500
     }],
     "animation 2": [{
-        "frame": [{
+        "frameData": [{
             "room": 3,
             "color": "#572788",
             "fade": 0
@@ -36,7 +36,7 @@ animations = {
         }, ],
         "pause": 500
     }, {
-        "frame": [{
+        "frameData": [{
             "room": 5,
             "color": "#428489",
             "fade": 0
