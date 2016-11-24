@@ -4,7 +4,7 @@ angular.module("animation-editor", [
 );
 
 angular.module("animation-editor")
-	.constant("API_URL", "http://localhost:3000");
+	.constant("API_URL", "http://192.168.178.168:3000");
 
 angular.module("animation-editor")
 	.factory("roomService", function ($http, API_URL)
