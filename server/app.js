@@ -39,6 +39,7 @@ app.get('/api/anim', function(req, res) {
   var data = rgbAnim.getAnimNames();
   data.status = "success";
   res.send(data);
+  console.log("möp");
 });
 
 app.get('/api/anim/stop', function(req, res) {

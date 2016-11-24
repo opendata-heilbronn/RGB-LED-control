@@ -40,7 +40,7 @@ function saveAnim(name, data)
 {
   animations[name] = {};
   animations[name] = data;
-  saveAnim();
+  writeAnimFile();
   if(curAnim == name)
     startAnim(name);
 }
@@ -48,7 +48,7 @@ function saveAnim(name, data)
 function deleteAnim(name)
 {
   delete animations[name];
-  saveAnim();
+  writeAnimFile();
 }
 
 var animIdx = 0;

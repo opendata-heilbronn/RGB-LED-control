@@ -1,1 +1,90 @@
-<!DOCTYPE html><html lang="en"><head>	<meta charset="UTF-8">	<title>RGB Animation Editor</title>	<link rel="stylesheet" href="../bower_components/angular-material/angular-material.min.css">	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">	<link rel="stylesheet" href="style/animation-editor.css"></head><body ng-app="animation-editor">	<div layout="row" ng-controller="mainCtrl as vm">		<div class="editor" flex="50">			<md-toolbar>				<div class="md-toolbar-tools">					<h2>						<span>Animation Editor</span>					</h2>					<span flex></span>					<md-button class="md-icon-button" aria-label="Open">						<md-icon md-font-icon="material-icons">folder open</md-icon>					</md-button>					<md-button class="md-icon-button" aria-label="Save">						<md-icon md-font-icon="material-icons">save</md-icon>					</md-button>				</div>			</md-toolbar>			<h3>Frames</h3>			<md-card ng-repeat="frame in vm.animation">				<md-card ng-repeat="roomSetting in frame.frameData | orderBy:'room'">					<div style="height: 20px; background-color: {{roomSetting.color}}; border-radius: 20px;">					</div>					<md-input-container class="md-block">						<md-select ng-model="roomSetting.room">							<md-option value="all">Alle Räume</md-option>							<md-option ng-repeat="(mac,room) in vm.rooms track by room.room" ng-value="{{room.room}}">								Raum {{room.room}} - {{mac}}							</md-option>						</md-select>					</md-input-container>					<md-input-container class="md-block">						<label for="color">Color</label>						<input ng-model="roomSetting.color" type="text" id="color">					</md-input-container>					<md-input-container class="md-block">						<label for="fade">Fade</label>						<input ng-model="roomSetting.fade" type="number" id="fade">					</md-input-container>				</md-card>				<md-button ng-click="vm.addFrameData(frame)">					Raumdaten hinzufügen				</md-button>				<md-input-container class="md-block">					<label for="pause">Pause</label>					<input ng-model="frame.pause" type="number" id="pause">				</md-input-container>			</md-card>			<md-button ng-click="vm.addFrame()">				<md-icon md-font-icon="material-icon">add</md-icon>				Frame hinzufügen			</md-button>		</div>		<div class="output" flex="50">			<pre>{{vm.animation | json}}</pre>		</div>	</div>	<script src="../bower_components/angular/angular.min.js"></script>	<script src="../bower_components/angular-aria/angular-aria.min.js"></script>	<script src="../bower_components/angular-animate/angular-animate.min.js"></script>	<script src="../bower_components/angular-messages/angular-messages.min.js"></script>	<script src="../bower_components/angular-material/angular-material.min.js"></script>	<script src="script/animation-editor.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>RGB Animation Editor</title>
+	<link rel="stylesheet" href="../bower_components/angular-material/angular-material.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="style/animation-editor.css">
+</head>
+<body ng-app="animation-editor">
+	<div layout="row" ng-controller="mainCtrl as vm">
+		<div class="editor" flex="50">
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<h2>
+						<span>Animation Editor</span>
+					</h2>
+					<span flex></span>
+					<md-menu>
+						<md-button class="md-icon-button" aria-label="Open" ng-click="vm.openMenu($mdOpenMenu, $event)">
+							<md-icon md-font-icon="material-icons">folder open</md-icon>
+						</md-button>
+						<md-menu-content>
+							<md-menu-item ng-repeat="anim in vm.onlineAnimations">
+								<md-button ng-click="vm.loadAnimation(anim)">
+									{{anim}}
+								</md-button>
+							</md-menu-item>
+							<div ng-if="vm.onlineAnimations.length === 0">
+								Keine gespeicherten Animationen
+							</div>
+						</md-menu-content>
+					</md-menu>
+					<md-button class="md-icon-button" aria-label="Save" ng-click="vm.save()">
+						<md-icon md-font-icon="material-icons">save</md-icon>
+					</md-button>
+				</div>
+			</md-toolbar>
+			<h3>Frames</h3>
+			<md-input-container class="md-block">
+				<label>Animation name</label>
+				<input type="text" ng-model="vm.animationName">
+			</md-input-container>
+			<md-card ng-repeat="frame in vm.animation">
+				<md-card ng-repeat="roomSetting in frame.frameData | orderBy:'room'">
+					<div style="height: 20px; background-color: {{roomSetting.color}}; border-radius: 20px;">
+					</div>
+					<md-input-container class="md-block">
+						<md-select ng-model="roomSetting.room">
+							<md-option value="all">Alle Räume</md-option>
+							<md-option ng-repeat="(mac,room) in vm.rooms track by room.room" ng-value="{{room.room}}">
+								Raum {{room.room}} - {{mac}}
+							</md-option>
+						</md-select>
+					</md-input-container>
+					<md-input-container class="md-block">
+						<label for="color">Color</label>
+						<input ng-model="roomSetting.color" type="text" id="color">
+					</md-input-container>
+					<md-input-container class="md-block">
+						<label for="fade">Fade</label>
+						<input ng-model="roomSetting.fade" type="number" id="fade">
+					</md-input-container>
+				</md-card>
+				<md-button ng-click="vm.addFrameData(frame)">
+					Raumdaten hinzufügen
+				</md-button>
+				<md-input-container class="md-block">
+					<label for="pause">Pause</label>
+					<input ng-model="frame.pause" type="number" id="pause">
+				</md-input-container>
+			</md-card>
+			<md-button ng-click="vm.addFrame()">
+				<md-icon md-font-icon="material-icon">add</md-icon>
+				Frame hinzufügen
+			</md-button>
+		</div>
+		<div class="output" flex="50">
+			<pre>{{vm.animation | json}}</pre>
+		</div>
+	</div>
+
+	<script src="../bower_components/angular/angular.min.js"></script>
+	<script src="../bower_components/angular-aria/angular-aria.min.js"></script>
+	<script src="../bower_components/angular-animate/angular-animate.min.js"></script>
+	<script src="../bower_components/angular-messages/angular-messages.min.js"></script>
+	<script src="../bower_components/angular-material/angular-material.min.js"></script>
+	<script src="script/animation-editor.js"></script>
+</body>
+</html>

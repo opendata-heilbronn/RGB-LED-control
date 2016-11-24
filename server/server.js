@@ -9,7 +9,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-const server = require('http').createServer(app).listen(3000);
+const server = require('http').createServer(app).listen(3000, function(){console.log("server gestartet")});
 const io = require('socket.io')(server);
 
 module.exports = {io, app};
