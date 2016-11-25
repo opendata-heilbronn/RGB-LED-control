@@ -63,8 +63,10 @@ function convertDevicesToRooms()
 }
 convertDevicesToRooms();
 
-new cronJob('00 00 07 * * *', function() {setMasterOverride(0);}, null, true, 'Europe/Berlin');
-new cronJob('00 00 20 * * *', function() {setMasterOverride(1);}, null, true, 'Europe/Berlin');
+new cronJob('00 00 08 * * *', function() {setMasterOverride(0);}, null, true, 'Europe/Berlin');
+new cronJob('00 00 18 * * MON-FRI', function() {setMasterOverride(1);}, null, true, 'Europe/Berlin');
+new cronJob('00 00 16 * * SAT,SUN', function() {setMasterOverride(1);}, null, true, 'Europe/Berlin');
+
 
 // deviceObjs is for properties that can't be serialized to json, e.g. intervals
 var deviceObjs = {};
