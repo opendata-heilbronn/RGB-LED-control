@@ -153,7 +153,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 
 void setup_wifi() {
-
+  WiFi.mode(WIFI_STA);
   delay(10);
   // We start by connecting to a WiFi network
   Serial.println();
@@ -181,28 +181,26 @@ void setup_wifi() {
 
 
 
-void mqttReconnect() {
-  // Loop until we're reconnected
-  while (!mqttClient.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    // Attempt to connect
-    if (mqttClient.connect(clientID.c_str())) {
-      Serial.println("connected");
-      for (int i = 0; i < subscriptions_length; i++ )
-      {
-        mqttClient.subscribe(subscriptions[i].c_str());
-        #if DEBUG
-          Serial.print("Subscribing to: ");
-          Serial.println(subscriptions[i]);
-        #endif
-      }
-    } else {
-      Serial.print("failed, rc=");
-      Serial.print(mqttClient.state());
-      Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
+void mqttTryReconnect() {  
+  Serial.print("Attempting MQTT connection...");
+  // Attempt to connect
+  if (mqttClient.connect(clientID.c_str())) {
+    Serial.println("connected");
+    for (int i = 0; i < subscriptions_length; i++ )
+    {
+      mqttClient.subscribe(subscriptions[i].c_str());
+      #if DEBUG
+        Serial.print("Subscribing to: ");
+        Serial.println(subscriptions[i]);
+      #endif
     }
+  } else {
+    Serial.print("failed, rc=");
+    Serial.print(mqttClient.state());
+    Serial.println(" try again in 5 seconds");
+    // Wait 5 seconds before retrying
+    delay(5000);
+    
   }
 }
 
@@ -252,15 +250,15 @@ void setup() {
   setupOTA();
   mqttClient.setServer(mqtt_server, 1883);
   mqttClient.setCallback(callback);
-  mqttReconnect();
+  mqttTryReconnect();
   registration();
 }
 
 
 void loop() {
-  ArduinoOTA.handle();
-  if (!mqttClient.connected()) {
-    mqttReconnect();
+  while(!mqttClient.connected()) {
+    mqttTryReconnect();
+    ArduinoOTA.handle();
   }
   mqttClient.loop();
   fadeLoop();
