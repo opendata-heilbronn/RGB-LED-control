@@ -20,7 +20,7 @@
 
 
 #define DEBUG false //debug output
-String Version = "v0.0.1";
+String Version = "v0.0.2";
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,
@@ -256,6 +256,7 @@ void setup() {
 
 
 void loop() {
+  ArduinoOTA.handle();
   while(!mqttClient.connected()) {
     mqttTryReconnect();
     ArduinoOTA.handle();
