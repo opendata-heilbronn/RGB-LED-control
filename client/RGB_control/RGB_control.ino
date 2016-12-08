@@ -188,11 +188,12 @@ void setup_wifi() {
   Serial.println("Version " + Version);
 }
 
-bool mqttTryReconnect() {  
+void mqttTryReconnect() {  
   Serial.print("Attempting MQTT connection...");
   // Attempt to connect
   if (mqttClient.connect(clientID.c_str())) {
     Serial.println("connected");
+    registration();
     for (int i = 0; i < subscriptions_length; i++ )
     {
       mqttClient.subscribe(subscriptions[i].c_str());
@@ -201,9 +202,7 @@ bool mqttTryReconnect() {
         Serial.println(subscriptions[i]);
       #endif
     }
-    return true;
-  } else {
-    return false;
+    
   }
 }
 
@@ -264,7 +263,6 @@ void setup() {
   mqttClient.setServer(mqtt_server, 1883);
   mqttClient.setCallback(callback);
   mqttTryReconnect();
-  registration();
 }
 
 unsigned int loopCounter = 1;
@@ -282,5 +280,10 @@ void loop() {
         mqttTryReconnect();  
       }   
     }
+  }
+  if (WiFi.status() != WL_CONNECTED) {
+    parseRGB("#000000");
+    setParsedRGB();
+    delay(100);
   }
 }
