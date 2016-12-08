@@ -209,7 +209,7 @@ client.on('message', function (topic, message) {
         if (devices[mac].isOnline == false) {
             console.log("Node " + mac + " went back online");
             sendDevices();
-            io.emit('deviceUpdate', {mac, status: 'online'});
+            io.emit('deviceUpdate', {mac: mac, status: 'online'});
         }
         devices[mac].isOnline = true;
         devices[mac].lastSeen = Date.now();
@@ -223,13 +223,13 @@ function keepalive() {
             if (devices[key].isOnline == true) {
                 console.log("Node " + key + " went offline");
                 sendDevices();
-                io.emit('deviceUpdate', {key, status: 'offline'});
+                io.emit('deviceUpdate', {mac:key, status: 'offline'});
             }
             devices[key].isOnline = false;
         }
     });
 }
 setInterval(keepalive, 5000);
-setInterval(sendDevices, 10000);
+setInterval(sendDevices, 1000);
 
 module.exports = {devices, sets, sendRGB, sendFade, startParty, stopInterval, sendDevices, setMasterOverride, startLighthouse, roomToMAC};

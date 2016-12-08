@@ -3,13 +3,16 @@
     <style>
 
         .raum {
-            fill: none;
             stroke: #FF0000;
             stroke-width: 7px;
         }
 
         .online {
-            stroke: #00FF00;
+            stroke: #00FF00 !important;
+        }
+
+        .offline {
+            stroke: #FF0000 !important;
         }
 
         .raum:hover {
@@ -29,6 +32,9 @@
         }
 
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="application/javascript"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 </head>
 <body>
 <svg width="100%" height="90%" viewBox="0 0 1292 1253" version="1.1"
@@ -63,7 +69,7 @@
 <path d="M748.288,483.334l-84.789,0" class="innenwand"/>
 <path d="M663.544,712.231l-153.393,0" class="innenwand"/>
 
-<path id="raum2" class="raum online" d="M1283.33,218.66l0,-150.023l-79.039,-60.387l-301.884,0l0,210.41l380.923,0Z" />
+<path id="raum2" class="raum" d="M1283.33,218.66l0,-150.023l-79.039,-60.387l-301.884,0l0,210.41l380.923,0Z" />
 <path id="raum3" class="raum" d="M798.239,252.952l32.36,34.108l71.804,-68.4l0,-210.41l-97.428,0l-79.039,60.369l0,167.426l53.274,0l19.029,16.815l0,0.092Z" />
 <path id="raum4" class="raum" d="M725.936,68.637l0,167.408l-72.556,0l-50.211,0l-144.909,0l0,-227.777l28.533,0l-0.023,-0.018l79.039,60.387l160.127,0Z" />
 <path id="raum5" class="raum" d="M324.154,236.045l0,-227.777l134.106,0l0,227.777l-134.106,0l0,0Z" />
@@ -79,6 +85,50 @@
 <path id="raum1" class="raum" d="M1283.33,218.66l0,365.206l-64.604,65.288l-41.601,0l0,-165.82l-60.814,0l0,-81.912l-71.951,-71.951l-141.953,0l0,-110.811l380.923,0Z" /></svg>
 
 
+<script>
+    $(function () {
+
+        var roomsCache = null;
+
+        var updateRooms = function(rooms) {
+            Object.keys(rooms).forEach(function (key) {
+                var device = rooms[key];
+                var room = device.room;
+                var element = $("#raum" + room);
+                element.attr("fill", device.color);
+                if (device.isOnline) {
+                    element.addClass("online");
+                } else {
+                    element.addClass("offline");
+                }
+            });
+        };
+
+        $.getJSON("http://192.168.178.168:3000/api/devices").then(function (result) {
+            roomsCache = result;
+            updateRooms(result);
+        });
+
+        const socket = io('http://192.168.178.168:3000/');
+        socket.on('connect', function () {
+            console.log('connected to socket.io')
+        });
+        socket.on('devices', function (data) {
+            roomsCache = data;
+            updateRooms(data);
+            console.log('received socket.io devices update', data);
+        });
+        socket.on('deviceUpdate', function (data) {
+            console.log('received socket.io device update', data);
+            if (roomsCache) {
+                var device = roomsCache[data.mac ? data.mac : data.key];
+                $("#raum"+device.room).removeClass("offline").removeClass("online").addClass(data.status);
+            }
+
+        });
+    });
+
+</script>
 </body>
 
 </html>
