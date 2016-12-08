@@ -18,9 +18,8 @@
 #include "gammaTable.h"
 #include "config.h" //set your SSID and pass here
 
-
 #define DEBUG false //debug output
-String Version = "v0.0.2";
+String Version = "v0.1.0";
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,
@@ -35,6 +34,7 @@ char msg[50];
 int value = 0;
 String thisMAC = WiFi.macAddress();
 String clientID = "RGB_controller_" + thisMAC;
+bool otaInProgress = false;
 
 String domain = "RGB-LED-control";
 
@@ -46,12 +46,13 @@ String subscriptions[] = {
 };
 const unsigned char subscriptions_length = sizeof(subscriptions)/sizeof(subscriptions[0]);
 
-int r1, g1, b1;
+
 unsigned long fadeRcvTime, lastFadePWMMillis=0;
 int curRGB[] = {0, 0, 0},
      wasRGB[3],
      toRGB[3];
 int fadeTime = 0;
+bool fadeActive = false;
 
 void registration()
 {
@@ -68,15 +69,15 @@ void parseRGB(String rgb)
   //Serial.println(number);
 
   // Split them up into r, g, b values
-  r1 = number >> 16;
-  g1 = number >> 8 & 0xFF;
-  b1 = number & 0xFF;
+  int r1 = number >> 16;
+  int g1 = number >> 8 & 0xFF;
+  int b1 = number & 0xFF;
   curRGB[0] = r1;
   curRGB[1] = g1;
   curRGB[2] = b1;
 }
 
-int tmpLast = 0;
+
 void setParsedRGB()
 {
   //analogWrite(r1Pin, gamma8[curRGB[0]] * 4);
@@ -115,6 +116,13 @@ void fadeLoop()
       }
       setParsedRGB();
     }
+  } else {
+    // finish fade by setting final toRGB
+    if (fadeActive) {
+      memcpy(curRGB, toRGB, sizeof(toRGB));
+      setParsedRGB();
+    }
+    fadeActive = false;
   }
 }
 
@@ -146,6 +154,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   else if (String(topic) == subscriptions[2])
   {
     parseFade(data);
+    fadeActive = true;
   }
 
   mqttClient.loop();
@@ -179,9 +188,7 @@ void setup_wifi() {
   Serial.println("Version " + Version);
 }
 
-
-
-void mqttTryReconnect() {  
+bool mqttTryReconnect() {  
   Serial.print("Attempting MQTT connection...");
   // Attempt to connect
   if (mqttClient.connect(clientID.c_str())) {
@@ -194,14 +201,16 @@ void mqttTryReconnect() {
         Serial.println(subscriptions[i]);
       #endif
     }
+    return true;
   } else {
-    Serial.print("failed, rc=");
-    Serial.print(mqttClient.state());
-    Serial.println(" try again in 5 seconds");
-    // Wait 5 seconds before retrying
-    delay(5000);
-    
+    return false;
   }
+}
+
+void disableLights() {
+  analogWrite(r1Pin, gamma10[0]);
+  analogWrite(g1Pin, gamma10[0]);
+  analogWrite(b1Pin, gamma10[0]);
 }
 
 void setupOTA()
@@ -217,9 +226,12 @@ void setupOTA()
 
   ArduinoOTA.onStart([]() {
     Serial.println("[OTA] Start");
+    disableLights();
+    otaInProgress = true;
   });
   ArduinoOTA.onEnd([]() {
     Serial.println("\n[OTA] End");
+    otaInProgress = false;
   });
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
     Serial.printf("[OTA] Progress: %u%%\r", (progress / (total / 100)));
@@ -231,6 +243,7 @@ void setupOTA()
     else if (error == OTA_CONNECT_ERROR) Serial.println("[OTA] Connect Failed");
     else if (error == OTA_RECEIVE_ERROR) Serial.println("[OTA] Receive Failed");
     else if (error == OTA_END_ERROR) Serial.println("[OTA] End Failed");
+    otaInProgress = false;
   });
   ArduinoOTA.begin();
   Serial.println("[OTA] ready");
@@ -254,13 +267,20 @@ void setup() {
   registration();
 }
 
+unsigned int loopCounter = 1;
 
 void loop() {
   ArduinoOTA.handle();
-  while(!mqttClient.connected()) {
-    mqttTryReconnect();
-    ArduinoOTA.handle();
+  if (!otaInProgress) {
+    if (mqttClient.connected()) {
+      mqttClient.loop();
+      fadeLoop();
+    } else {
+      delay(100);
+      loopCounter++;
+      if (loopCounter % 50 == 0) {
+        mqttTryReconnect();  
+      }   
+    }
   }
-  mqttClient.loop();
-  fadeLoop();
 }
