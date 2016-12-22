@@ -71,6 +71,8 @@ function changeRoom(obj, roomNumber) {
     else {
         rgbControls.sendFade(mac, obj.color, obj.fade);
     }
+
+   rgbControls.keepalive();
 }
 
 function doFrame(frame) {
