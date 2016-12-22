@@ -90,7 +90,7 @@ function roomToMAC(roomNum)
   return roomDevices[roomNum];
 }
 
-function fadeOff()
+function fadeOff(state)
 {
   if(state == 0)
   {
