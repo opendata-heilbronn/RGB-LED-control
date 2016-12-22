@@ -61,7 +61,7 @@ app.get('/api/anim/:name', function(req, res) {
 
 app.post('/api/anim/:name', function(req, res) {
   var name = req.params.name;
-  rgbAnim.saveAnim(name, req.body[name]);
+  rgbAnim.saveAnim(name, req.body);
   res.send({"status": "success"});
 });
 
