@@ -62,29 +62,28 @@ function startAnim(name) {
     //}, 0);
 }
 
-function changeRoom(roomNumber){
+function changeRoom(roomNumber) {
     var mac = rgbControls.roomToMAC(roomNumber);
-    
-    if(obj.fade == 0) {
-      rgbControls.sendRGB(mac, obj.color);
+
+    if (obj.fade == 0) {
+        rgbControls.sendRGB(mac, obj.color);
     }
     else {
-      rgbControls.sendFade(mac, obj.color, obj.fade);
+        rgbControls.sendFade(mac, obj.color, obj.fade);
     }
-}    
+}
 
-function doFrame(frame)
-{
-  var frameData = frame.frameData;
-  frameData.forEach(function(obj){ //TODO all rooms
-    if($.isArray(obj.room)){
-        obj.room.forEach(function(room){
-            changeRoom(room);
-        });
-    }else{
-        changeRoom(obj.room);
-    }
-  });
+function doFrame(frame) {
+    var frameData = frame.frameData;
+    frameData.forEach(function (obj) { //TODO all rooms
+        if (Array.isArray(obj.room)) {
+            obj.room.forEach(function (room) {
+                changeRoom(room);
+            });
+        } else {
+            changeRoom(obj.room);
+        }
+    });
 
     ++animIdx;
     if (animIdx >= animLength)
