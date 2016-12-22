@@ -109,18 +109,18 @@ function fadeOff(state)
 
 function setAnimation(name){
     console.log(name);
-    if(name = "off"){
+    if(name == "off"){
             fadeOff(0);
-    }else if(name = "party"){
+    }else if(name == "party"){
             Object.keys(devices).forEach(function(key){
                 startParty(key); //start party mode
-            });    
-    }else if(name = "lighthouse"){
+            });
+    }else if(name == "lighthouse"){
             startLighthouse();
     }else{
             RGB_anim.startAnim(name);
-    }    
-}    
+    }
+}
 
 function turnOffNow() {
     Object.keys(devices).forEach(function(key){
