@@ -257,6 +257,7 @@ void setup() {
   pinMode(g1Pin, OUTPUT);
   pinMode(b1Pin, OUTPUT);
   analogWriteFreq(200);
+  setParsedRGB();
   Serial.begin(115200);
   setup_wifi();
   setupOTA();
