@@ -49,6 +49,7 @@ const unsigned char subscriptions_length = sizeof(subscriptions)/sizeof(subscrip
 
 
 unsigned long fadeRcvTime, lastFadePWMMillis=0;
+unsigned long lastCallback = 0;
 int curRGB[] = {0, 0, 0},
      wasRGB[3],
      toRGB[3];
@@ -128,6 +129,8 @@ void fadeLoop()
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
+  String topicStr = String(topic);
+  unsigned long callbackTime = millis();
   String data = "";
   for (int i = 0; i < length; i++)
   {
@@ -135,16 +138,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   #if DEBUG
     Serial.print("[");
-    Serial.print(topic);
+    Serial.print(topicStr);
     Serial.print("] ");
+    if (lastCallback != 0) {
+      Serial.print(millis() - lastCallback);
+      Serial.print(" ");
+    }
+    Serial.print(millis());
+    Serial.print(" ");
     Serial.println(data);
   #endif
-
-  if (String(topic) == subscriptions[0])
+  if (topicStr == subscriptions[0])
   {
     mqttClient.publish(String(domain + "/ack/" + thisMAC).c_str(), "ack");
   }
-  else if (String(topic) == subscriptions[1])
+  else if (topicStr == subscriptions[1])
   {
     parseRGB(data);
     setParsedRGB();
@@ -152,11 +160,16 @@ void callback(char* topic, byte* payload, unsigned int length) {
       Serial.println("Setting RGB " + data);
     #endif
   }
-  else if (String(topic) == subscriptions[2])
+  else if (topicStr == subscriptions[2])
   {
     parseFade(data);
     fadeActive = true;
   }
+  lastCallback = millis();
+  #if DEBUG
+  Serial.print("Callback prossesing time: ");
+  Serial.println(millis() - callbackTime);
+  #endif
 }
 
 
