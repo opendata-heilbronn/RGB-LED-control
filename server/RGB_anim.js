@@ -17,8 +17,7 @@ function readAnimFile() {
     animations = JSON.parse(content);
     if (fs.existsSync(userAnimations)) {
         content = fs.readFileSync(userAnimations);
-        var userAnimations = JSON.parse(content);
-        Object.assign(animations, userAnimations);
+        Object.assign(animations, JSON.parse(content));
     }
 }
 
@@ -36,6 +35,7 @@ function getAnim(name) {
 }
 
 function saveAnim(name, data) {
+    console.log("save anim: ", name, " data: ",data);
     animations[name] = {};
     animations[name] = data;
     writeAnimFile();
