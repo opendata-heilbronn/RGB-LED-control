@@ -98,8 +98,9 @@ function doFrame(frame) {
 function stopAnim() {
     animIdx = 0;
     clearTimeout(animTimeout);
+    rgbControls.turnOffNow();
 }
 
 readAnimFile();
 
-module.exports = {getAnimNames, getAnim, saveAnim, deleteAnim, startAnim, stopAnim}
+module.exports = {getAnimNames, getAnim, saveAnim, deleteAnim, startAnim, stopAnim};

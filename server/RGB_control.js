@@ -35,8 +35,6 @@ var topicACK = domain + "/ack/+";
 var topicControl = domain + "/data/RGB/";
 var topicFade = domain + "/data/fade/";
 
-var masterOverride = 1;
-
 var devices = {
     "18:FE:34:CC:FC:EA": {room: 1},
     "18:FE:34:D4:2E:BD": {room: 2},
@@ -100,21 +98,26 @@ function roomToMAC(roomNum)
 
 function setMasterOverride(state)
 {
-  masterOverride = state;
-  if(masterOverride == 0)
+  if(state == 0)
   {
     Object.keys(devices).forEach(function(key){
       stopInterval(key); //stop party mode
       sendFade(key, "#000000", 10000);
     });
-  }
-  if(masterOverride == 1)
+  } else if(state == 1)
   {
     Object.keys(devices).forEach(function(key){
       startParty(key); //start party mode
     });
   }
 }
+
+function turnOffNow() {
+    Object.keys(devices).forEach(function(key){
+        sendRGB(key, "#000000");
+    });
+}
+
 
 function dec2hex(i) {
     return (i + 0x100).toString(16).substr(-2).toUpperCase();
@@ -232,4 +235,4 @@ function keepalive() {
 setInterval(keepalive, 5000);
 setInterval(sendDevices, 1000);
 
-module.exports = {devices, sets, sendRGB, sendFade, startParty, stopInterval, sendDevices, setMasterOverride, startLighthouse, roomToMAC};
+module.exports = {devices, sets, sendRGB, sendFade, startParty, stopInterval, sendDevices, setMasterOverride, startLighthouse, roomToMAC, turnOffNow};
