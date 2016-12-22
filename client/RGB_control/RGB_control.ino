@@ -17,9 +17,10 @@
 
 #include "gammaTable.h"
 #include "config.h" //set your SSID and pass here
+const char* mqtt_server = "192.168.178.168";
 
 #define DEBUG false //debug output
-String Version = "v0.1.0";
+String Version = "v0.1.2";
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,
@@ -157,7 +158,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     fadeActive = true;
   }
 
-  mqttClient.loop();
+  Serial.println(ESP.getFreeHeap());
 }
 
 
@@ -202,7 +203,8 @@ void mqttTryReconnect() {
         Serial.println(subscriptions[i]);
       #endif
     }
-    
+  } else {
+    Serial.println("failed.");
   }
 }
 
@@ -275,6 +277,7 @@ void loop() {
       mqttClient.loop();
       fadeLoop();
     } else {
+      disableLights();
       delay(100);
       loopCounter++;
       if (loopCounter % 50 == 0) {
