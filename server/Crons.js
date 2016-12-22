@@ -1,9 +1,16 @@
 var cronJob = require('cron').CronJob;
+const RGB = require('./RGB_control');
 
-function addCrons(){
-    new cronJob('00 00 08 * * *', function() {RGB_control.setAnimation("off");}, null, true, 'Europe/Berlin');
-    new cronJob('00 00 18 * * MON-FRI', function() {RGB_control.setAnimation("party");}, null, true, 'Europe/Berlin');
-    new cronJob('00 00 16 * * SAT,SUN', function() {RGB_control.setAnimation("party");}, null, true, 'Europe/Berlin');
-}
+function initCrons(){
+    Object.keys(crons).forEach(function(key){
+            new cronJob(key, function() {RGB.setAnimation(cron[key]);}, null, true, 'Europe/Berlin');
+    });    
+}    
 
-module.exports = {addCrons};
+var crons = {
+    '00 00 08 * * *':'off',
+    '00 00 18 * * MON-FRI':'party',
+    '00 00 16 * * SAT,SUN':'party',
+}    
+
+module.exports = {initCrons};
