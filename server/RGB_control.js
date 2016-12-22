@@ -108,7 +108,7 @@ function fadeOff()
 
 function setAnimation(name){
     if(name = "off"){
-            fadeOff();
+            fadeOff(0);
     }else if(name = "party"){
             Object.keys(devices).forEach(function(key){
                 startParty(key); //start party mode
