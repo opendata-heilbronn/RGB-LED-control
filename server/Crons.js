@@ -13,6 +13,4 @@ var crons = {
     '00 00 16 * * SAT,SUN':'party',
 }    
 
-
-
 module.exports = {initCrons};
