@@ -54,6 +54,7 @@ var curAnim = "";
 var animTimeout;
 
 function startAnim(name) {
+    console.log(name);
     stopAnim();
     curAnim = name;
     animLength = animations[name].length;
