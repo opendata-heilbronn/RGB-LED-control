@@ -13,7 +13,6 @@ var util = require('util');
 var mqtt = require('mqtt');
 //var express = require('express');
 var hsl2rgb = require('hsv-rgb');
-var cronJob = require('cron').CronJob;
 
 //additionally write console.log to log file
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags: 'a'});
@@ -61,11 +60,6 @@ function convertDevicesToRooms()
 }
 convertDevicesToRooms();
 
-new cronJob('00 00 08 * * *', function() {setMasterOverride(0);}, null, true, 'Europe/Berlin');
-new cronJob('00 00 18 * * MON-FRI', function() {setMasterOverride(1);}, null, true, 'Europe/Berlin');
-new cronJob('00 00 16 * * SAT,SUN', function() {setMasterOverride(1);}, null, true, 'Europe/Berlin');
-
-
 // deviceObjs is for properties that can't be serialized to json, e.g. intervals
 var deviceObjs = {};
 Object.keys(devices).forEach(device => deviceObjs[device] = {});
@@ -96,7 +90,7 @@ function roomToMAC(roomNum)
   return roomDevices[roomNum];
 }
 
-function setMasterOverride(state)
+function fadeOff()
 {
   if(state == 0)
   {
@@ -111,6 +105,20 @@ function setMasterOverride(state)
     });
   }
 }
+
+function setAnimation(name){
+    if(name = "off"){
+            fadeOff();
+    }else if(name = "party"){
+            Object.keys(devices).forEach(function(key){
+                startParty(key); //start party mode
+            });    
+    }else if(name = "lighthouse"){
+            startLighthouse();
+    }else{
+            RGB_anim.startAnim(name);
+    }    
+}    
 
 function turnOffNow() {
     Object.keys(devices).forEach(function(key){
@@ -168,6 +176,8 @@ function startLighthouse()
     lightHouseInterval = null;
   }
 }
+
+Crons.addCrons();
 
 var lightHouseIdx = 0;
 var prevColor;
@@ -235,4 +245,4 @@ function keepalive() {
 setInterval(keepalive, 5000);
 setInterval(sendDevices, 1000);
 
-module.exports = {devices, sets, sendRGB, sendFade, startParty, stopInterval, sendDevices, setMasterOverride, startLighthouse, roomToMAC, turnOffNow};
+module.exports = {devices,  fadeOff, roomToMAC, sendDevices, sendFade, sendRGB, setAnimation, sets, startParty, stopInterval, turnOffNow};
