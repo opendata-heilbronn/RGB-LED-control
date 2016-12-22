@@ -102,6 +102,21 @@ function stopAnim() {
     rgbControls.turnOffNow();
 }
 
+function setAnimation(name){
+    console.log(name);
+    if(name == "off"){
+            rgbControls.fadeOff(0);
+    }else if(name == "party"){
+            Object.keys(rgbControls.devices).forEach(function(key){
+                rgbControls.tartParty(key); //start party mode
+            });
+    }else if(name == "lighthouse"){
+            rgbControls.tartLighthouse();
+    }else{
+            startAnim(name);
+    }
+}
+
 readAnimFile();
 
-module.exports = {getAnimNames, getAnim, saveAnim, deleteAnim, startAnim, stopAnim};
+module.exports = {getAnimNames, getAnim, saveAnim, deleteAnim, setAnimation, startAnim, stopAnim};
