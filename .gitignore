@@ -44,3 +44,4 @@ config.h
 bower_components/
 
 server/anims-user.json
+update-project.sh
