@@ -13,6 +13,7 @@ var util = require('util');
 var mqtt = require('mqtt');
 //var express = require('express');
 var hsl2rgb = require('hsv-rgb');
+var Crons = require('./Crons');
 
 //additionally write console.log to log file
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags: 'a'});
@@ -177,7 +178,7 @@ function startLighthouse()
   }
 }
 
-Crons.addCrons();
+Crons.initCrons();
 
 var lightHouseIdx = 0;
 var prevColor;
