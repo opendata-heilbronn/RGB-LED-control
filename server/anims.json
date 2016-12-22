@@ -126,5 +126,2079 @@
       ],
       "pause": 500
     }
+  ],
+  "cowoStack":[
+    {
+      "frameData": [
+        {
+          "room": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "color": "#000000",
+          "fade": 0
+        }
+      ],
+      "pause": 0
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            5
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            6
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            6
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            7
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            7
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            8
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            8
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            9
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            9
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            10
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            10
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            11
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            11
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            12
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            12
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            13
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            13
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            14
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            5
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            6
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            6
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            7
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            7
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            8
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            8
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            9
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            9
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            10
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            10
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            11
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            11
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            12
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            12
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            13
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            5
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            6
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            6
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            7
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            7
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            8
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            8
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            9
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            9
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            10
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            10
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            11
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            11
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            12
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            5
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            6
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            6
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            7
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            7
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            8
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            8
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            9
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            9
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            10
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            10
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            11
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            5
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            6
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            6
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            7
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            7
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            8
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            8
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            9
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            9
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            10
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            5
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            6
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            6
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            7
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            7
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            8
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            8
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            9
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            5
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            6
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            6
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            7
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            7
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            8
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            5
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            6
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            6
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            7
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            5
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            6
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            4
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            5
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            3
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            4
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            2
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            3
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#000000",
+          "fade": 0
+        },
+        {
+          "room": [
+            2
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 1000
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "color": "#000000",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "color": "#000000",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "color": "#000000",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    },
+    {
+      "frameData": [
+        {
+          "room": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "color": "#FFFFFF",
+          "fade": 0
+        }
+      ],
+      "pause": 100
+    }
   ]
 }

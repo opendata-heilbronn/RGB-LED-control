@@ -20,7 +20,7 @@
 const char* mqtt_server = "192.168.178.168";
 
 #define DEBUG false //debug output
-String Version = "v0.1.2";
+String Version = "v0.1.3";
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,
@@ -157,8 +157,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
     parseFade(data);
     fadeActive = true;
   }
-
-  Serial.println(ESP.getFreeHeap());
 }
 
 
