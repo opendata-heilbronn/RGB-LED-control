@@ -17,8 +17,7 @@ function readAnimFile() {
     animations = JSON.parse(content);
     if (fs.existsSync(userAnimations)) {
         content = fs.readFileSync(userAnimations);
-        var userAnimations = JSON.parse(content);
-        Object.assign(animations, userAnimations);
+        Object.assign(animations, JSON.parse(content));
     }
 }
 
