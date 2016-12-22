@@ -3,6 +3,9 @@ const server = require('./server');
 const app = server.app;
 const rgbControls = require('./RGB_control');
 const rgbAnim = require('./RGB_anim');
+const cron = require('./Crons');
+
+cron.initCrons();
 
 app.get('/api/devices', function (req, res) {
     res.send(rgbControls.devices);
