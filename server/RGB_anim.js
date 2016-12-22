@@ -72,7 +72,7 @@ function changeRoom(obj, roomNumber) {
         rgbControls.sendFade(mac, obj.color, obj.fade);
     }
 
-   rgbControls.keepalive();
+   rgbControls.sendDevices();
 }
 
 function doFrame(frame) {
