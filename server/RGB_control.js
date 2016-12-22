@@ -13,6 +13,7 @@ var util = require('util');
 var mqtt = require('mqtt');
 //var express = require('express');
 var hsl2rgb = require('hsv-rgb');
+var RGB_anim = require('./RGB_anim');
 
 //additionally write console.log to log file
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags: 'a'});
@@ -107,6 +108,7 @@ function fadeOff(state)
 }
 
 function setAnimation(name){
+    console.log(name);
     if(name = "off"){
             fadeOff(0);
     }else if(name = "party"){
