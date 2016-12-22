@@ -3,7 +3,7 @@ const RGB = require('./RGB_control');
 
 function initCrons(){
     Object.keys(crons).forEach(function(key){
-            new cronJob(key, function() {RGB.setAnimation(cron[key]);}, null, true, 'Europe/Berlin');
+            new cronJob(key, function() {RGB.setAnimation(crons[key]);}, null, true, 'Europe/Berlin');
     });    
 }    
 
