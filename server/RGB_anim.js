@@ -96,6 +96,7 @@ function doFrame(frame) {
 function stopAnim() {
     animIdx = 0;
     clearTimeout(animTimeout);
+    rgbControls.setMasterOverride(0);
 }
 
 readAnimFile();
