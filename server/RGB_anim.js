@@ -35,6 +35,7 @@ function getAnim(name) {
 }
 
 function saveAnim(name, data) {
+    console.log("save anim: ", name, " data: ",data);
     animations[name] = {};
     animations[name] = data;
     writeAnimFile();
