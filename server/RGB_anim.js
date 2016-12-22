@@ -62,7 +62,7 @@ function startAnim(name) {
     //}, 0);
 }
 
-function changeRoom(roomNumber) {
+function changeRoom(obj, roomNumber) {
     var mac = rgbControls.roomToMAC(roomNumber);
 
     if (obj.fade == 0) {
@@ -78,10 +78,10 @@ function doFrame(frame) {
     frameData.forEach(function (obj) { //TODO all rooms
         if (Array.isArray(obj.room)) {
             obj.room.forEach(function (room) {
-                changeRoom(room);
+                changeRoom(obj, room);
             });
         } else {
-            changeRoom(obj.room);
+            changeRoom(obj, obj.room);
         }
     });
 
