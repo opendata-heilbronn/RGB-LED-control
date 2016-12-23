@@ -103,14 +103,13 @@ function stopAnim() {
 }
 
 function setAnimation(name){
-    console.log(name);
-    if(name == "off"){
+    if(name == 'off'){
             rgbControls.fadeOff(0);
-    }else if(name == "party"){
+    }else if(name == 'party'){
             Object.keys(rgbControls.devices).forEach(function(key){
                 rgbControls.startParty(key); //start party mode
             });
-    }else if(name == "lighthouse"){
+    }else if(name == 'lighthouse'){
             rgbControls.startLighthouse();
     }else{
             startAnim(name);
