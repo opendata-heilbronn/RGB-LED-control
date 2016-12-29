@@ -1,5 +1,6 @@
 "use strict";
 const server = require('./server');
+const fs = require('fs');
 const app = server.app;
 const rgbControls = require('./RGB_control');
 const rgbAnim = require('./RGB_anim');
