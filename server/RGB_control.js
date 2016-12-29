@@ -39,7 +39,7 @@ var devices = {
     "18:FE:34:D4:2E:BD": {room: 2},
     "5C:CF:7F:88:1B:5D": {room: 3},
     "18:FE:34:D3:F5:7F": {room: 4},
-    "5C:CF:7F:8B:F0:70": {room: 5}, //Leandros nodeMCU
+    "5C:CF:7F:1D:BB:11": {room: 5}, // was 5C:CF:7F:8B:F0:70 Leandros nodeMCU
     "5C:CF:7F:1B:6F:85": {room: 6},
     "5C:CF:7F:8B:C5:03": {room: 7},
     "5C:CF:7F:88:1A:13": {room: 8},
