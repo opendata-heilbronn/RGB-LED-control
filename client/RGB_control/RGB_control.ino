@@ -13,7 +13,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
-#include <ArduinoOTA.h>
+#include <ESP8266httpUpdate.h>
+// #include <ArduinoOTA.h>
 #include <PubSubClient.h>
 #include <sstream>
 
@@ -22,7 +23,7 @@
 const char* mqtt_server = "192.168.178.168";
 
 #define DEBUG false //debug output
-String Version = "v0.2.1";
+String Version = "v0.3.0";
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,
@@ -51,11 +52,13 @@ String domain = "RGB-LED-control";
 float humidity = NAN;
 float temperature = NAN;
 
+const String subUpdateFirmware = domain + "/updateFirmware";
 
 String subscriptions[] = {
   domain + "/keepalive",
   domain + "/data/RGB/" + thisMAC,
-  domain + "/data/fade/" + thisMAC
+  domain + "/data/fade/" + thisMAC,
+  subUpdateFirmware
 };
 const unsigned char subscriptions_length = sizeof(subscriptions)/sizeof(subscriptions[0]);
 
@@ -163,15 +166,16 @@ void callback(char* topic, byte* payload, unsigned int length) {
   if (topicStr == subscriptions[0])
   {
     long rssi = WiFi.RSSI();
-    String response = String(domain + "/ack/" + thisMAC+"?rssi="+rssi);
+    String response = String(domain + "/ack/" + thisMAC);
+    String message = String("rssi=")+String(rssi);
     if(!isnan(temperature)){
-      response+="&temperature="+String(temperature);
+      message+="&temperature="+String(temperature);
     }
     if(!isnan(humidity)){
-      response+="&humidity="+String(humidity);
+      message+="&humidity="+String(humidity);
     }
-    Serial.println(response);
-    mqttClient.publish(response.c_str(), "ack");
+    Serial.println(response+String(" ")+message);
+    mqttClient.publish(response.c_str(), message.c_str());
   }
   else if (topicStr == subscriptions[1])
   {
@@ -185,6 +189,20 @@ void callback(char* topic, byte* payload, unsigned int length) {
   {
     parseFade(data);
     fadeActive = true;
+  } else if (topicStr == subUpdateFirmware) {
+    Serial.println("Downloading firmware...");
+    t_httpUpdate_return ret  = ESPhttpUpdate.update(mqtt_server, 3000, "/firmware/rgblight.bin", Version);
+    switch(ret) {
+     case HTTP_UPDATE_FAILED:
+          Serial.println("[update] Update failed.");
+          break;
+     case HTTP_UPDATE_NO_UPDATES:
+          Serial.println("[update] Update no Update.");
+          break;
+     case HTTP_UPDATE_OK:
+         Serial.println("[update] Update ok."); // may not called we reboot the ESP
+          break;
+    }
   }
   lastCallback = millis();
   #if DEBUG
@@ -246,7 +264,7 @@ void disableLights() {
   analogWrite(b1Pin, gamma10[0]);
 }
 
-void setupOTA()
+/*void setupOTA()
 {
   // Port defaults to 8266
   ArduinoOTA.setPort(8266);
@@ -281,7 +299,7 @@ void setupOTA()
   ArduinoOTA.begin();
   Serial.println("[OTA] ready");
 }
-
+*/
 
 void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
@@ -294,7 +312,7 @@ void setup() {
   setParsedRGB();
   Serial.begin(115200);
   setup_wifi();
-  setupOTA();
+  //setupOTA();
   mqttClient.setServer(mqtt_server, 1883);
   mqttClient.setCallback(callback);
   mqttTryReconnect();
@@ -305,7 +323,7 @@ unsigned int loopCounter = 1;
 unsigned long lastUpdate = millis();
 
 void loop() {
-  ArduinoOTA.handle();
+  //ArduinoOTA.handle();
   if (!otaInProgress) {
     if (mqttClient.connected()) {
       mqttClient.loop();

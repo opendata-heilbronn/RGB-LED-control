@@ -91,3 +91,10 @@ app.get('/firmware/rgblight.bin', function (req, res) {
     });
     res.end(firmware, 'binary');
 });
+
+app.post('/firmware/update', function (req, res) {
+    rgbControls.sendFirmwareUpdate();
+    res.send({"status": "success"});
+});
+
+

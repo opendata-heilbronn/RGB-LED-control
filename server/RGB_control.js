@@ -198,24 +198,20 @@ client.on('message', function (topic, message) {
         console.log("New registration from MAC " + split[0] + ', Version: ' + split[1]);
     }
     else if (topic.substr(0, topicACK.length - 1) == topicACK.substr(0, topicACK.length - 1)) { //check if topic is ACK
-        var args = "";
-        if (topic.indexOf("?") != -1) {
-            args = topic.substring(topic.indexOf("?")+1);
-            topic = topic.substr(0, topic.indexOf("?"));
-        }
-        console.log("Args: ["+args+"], topic: ["+topic+"]");
+        console.log("Args: ["+message+"], topic: ["+topic+"]");
         var mac = topic.split("/").pop();
         if(!devices[mac]) {
             console.log('unknown device ' + mac);
             return false;
         } else {
-            if (args != "") {
+            if (message) {
                 var currentDevice = devices[mac];
-                var subArgs = args.indexOf("&") != -1  ? args.split("&") : [args];
+                var subArgs = message.indexOf("&") != -1  ? message.split("&") : [args];
                 subArgs.forEach(function(element) {
                     var parts = element.split("=");
                     currentDevice[parts[0]] = parts[1];
                 });
+                console.log("Device: "+JSON.stringify(currentDevice));
             }
         }
         if (devices[mac].isOnline == false) {
@@ -241,7 +237,15 @@ function keepalive() {
         }
     });
 }
+
+function sendFirmwareUpdate()
+{
+    client.publish("RGB-LED-control/updateFirmware","");
+}
+
+
 setInterval(keepalive, 5000);
 setInterval(sendDevices, 1000);
 
-module.exports = {devices,  fadeOff, roomToMAC, sendDevices, sendFade, sendRGB, sets, startParty, stopInterval, turnOffNow};
+module.exports = {devices,  fadeOff, roomToMAC, sendDevices, sendFade,
+    sendRGB, sets, startParty, stopInterval, turnOffNow, sendFirmwareUpdate};
