@@ -212,12 +212,12 @@ client.on('message', function (topic, message) {
             if (args != "") {
                 var currentDevice = devices[mac];
                 var subArgs = args.indexOf("&") != -1  ? args.split("&") : [args];
-                console.log('subargs: ', subArgs);
+                console.log('subargs: '+JSON.stringify( subArgs));
                 subArgs.forEach(function(element) {
                     var parts = element.split("=");
                     currentDevice[parts[0]] = parts[1];
                 });
-                console.log("Device: ", currentDevice);
+                console.log("Device: "+ JSON.stringify(currentDevice));
             }
         }
         if (devices[mac].isOnline == false) {
