@@ -11,7 +11,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
-#include <ArduinoOTA.h>
+// #include <ArduinoOTA.h>
 #include <PubSubClient.h>
 #include <sstream>
 
@@ -20,7 +20,7 @@
 const char* mqtt_server = "192.168.178.168";
 
 #define DEBUG false //debug output
-String Version = "v0.1.3";
+String Version = "v0.1.3-dev";
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,
@@ -150,7 +150,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
   #endif
   if (topicStr == subscriptions[0])
   {
-    mqttClient.publish(String(domain + "/ack/" + thisMAC).c_str(), "ack");
+    long rssi = WiFi.RSSI();
+    Serial.print("RSSI from ACK: ");
+    Serial.println(rssi);
+    Serial.println(String(domain + "/ack/" + thisMAC+"?rssi="+rssi));
+    mqttClient.publish(String(domain + "/ack/" + thisMAC+"?rssi="+rssi).c_str(), "ack");
   }
   else if (topicStr == subscriptions[1])
   {
@@ -227,7 +231,7 @@ void disableLights() {
 
 void setupOTA()
 {
-  // Port defaults to 8266
+/*  // Port defaults to 8266
   ArduinoOTA.setPort(8266);
 
   // Hostname defaults to MAC address
@@ -258,7 +262,7 @@ void setupOTA()
     otaInProgress = false;
   });
   ArduinoOTA.begin();
-  Serial.println("[OTA] ready");
+  Serial.println("[OTA] ready");*/
 }
 
 
@@ -273,16 +277,17 @@ void setup() {
   setParsedRGB();
   Serial.begin(115200);
   setup_wifi();
-  setupOTA();
+  //setupOTA();
   mqttClient.setServer(mqtt_server, 1883);
   mqttClient.setCallback(callback);
   mqttTryReconnect();
 }
 
 unsigned int loopCounter = 1;
+unsigned long lastUpdate = millis();
 
 void loop() {
-  ArduinoOTA.handle();
+ // ArduinoOTA.handle();
   if (!otaInProgress) {
     if (mqttClient.connected()) {
       mqttClient.loop();
@@ -295,6 +300,12 @@ void loop() {
         mqttTryReconnect();  
       }   
     }
+  }
+  if (millis() - lastUpdate > 5000) {
+    lastUpdate = millis();
+    long rssi = WiFi.RSSI();
+    Serial.print("RSSI: ");
+    Serial.println(rssi);
   }
   if (WiFi.status() != WL_CONNECTED) {
     parseRGB("#000000");
