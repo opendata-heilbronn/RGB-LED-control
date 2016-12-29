@@ -48,10 +48,10 @@ var devices = {
     "5C:CF:7F:8B:C6:AA": {room: 11},
     "5C:CF:7F:88:1D:A0": {room: 12},
     "18:FE:34:E1:AF:AD": {room: 13}, //Vale
-    "5C:CF:7F:88:1E:04": {room: 14},
+    "5C:CF:7F:88:1E:04": {room: 14}
 };
 
-var roomDevices = {}
+var roomDevices = {};
 function convertDevicesToRooms()
 {
   Object.keys(devices).forEach(function(key){
@@ -198,7 +198,14 @@ client.on('message', function (topic, message) {
         console.log("New registration from MAC " + split[0] + ', Version: ' + split[1]);
     }
     else if (topic.substr(0, topicACK.length - 1) == topicACK.substr(0, topicACK.length - 1)) { //check if topic is ACK
+        var args = "";
+        if (topic.indexOf("?") != -1) {
+            args = topic.substring(topic.indexOf("?"));
+            topic = topic.substr(0, topic.indexOf("?")-1);
+        }
+        console.log("Args: ["+args+"], topic: ["+topic+"]");
         var mac = topic.split("/").pop();
+
         if(!devices[mac]) {
             console.log('unknown device ' + mac);
             return false;
