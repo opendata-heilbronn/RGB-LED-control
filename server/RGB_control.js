@@ -204,14 +204,17 @@ client.on('message', function (topic, message) {
             console.log('unknown device ' + mac);
             return false;
         } else {
-            if (message && message.indexOf("=") != -1) {
-                var currentDevice = devices[mac];
-                var subArgs = message.indexOf("&") != -1  ? message.split("&") : [message];
-                subArgs.forEach(function(element) {
-                    var parts = element.split("=");
-                    currentDevice[parts[0]] = parts[1];
-                });
-                console.log("Device: "+JSON.stringify(currentDevice));
+            if (message) {
+                var args = message.toString();
+                if (args.indexOf("=") != -1) {
+                    var currentDevice = devices[mac];
+                    var subArgs = args.indexOf("&") != -1 ? args.split("&") : [args];
+                    subArgs.forEach(function (element) {
+                        var parts = element.split("=");
+                        currentDevice[parts[0]] = parts[1];
+                    });
+                    console.log("Device: " + JSON.stringify(currentDevice));
+                }
             }
         }
         if (devices[mac].isOnline == false) {
