@@ -54,7 +54,6 @@ var curAnim = "";
 var animTimeout;
 
 function startAnim(name) {
-    console.log(name);
     stopAnim();
     curAnim = name;
     animLength = animations[name].length;
@@ -103,14 +102,16 @@ function stopAnim() {
 }
 
 function setAnimation(name){
-    console.log(name);
-    if(name == "off"){
+    if(name == 'off'){
+            stopAnim();
             rgbControls.fadeOff(0);
-    }else if(name == "party"){
+    }else if(name == 'party'){
+            stopAnim();
             Object.keys(rgbControls.devices).forEach(function(key){
                 rgbControls.startParty(key); //start party mode
             });
-    }else if(name == "lighthouse"){
+    }else if(name == 'lighthouse'){
+            stopAnim();
             rgbControls.startLighthouse();
     }else{
             startAnim(name);

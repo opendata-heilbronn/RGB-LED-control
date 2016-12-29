@@ -75,6 +75,6 @@ app.delete('/api/anim/:name', function(req, res) {
 });
 
 app.get('/api/anim/:name/start', function(req, res) {
-  rgbAnim.startAnim(req.params.name);
+  rgbAnim.setAnimation(req.params.name);
   res.send({"status": "success"});
 });
