@@ -200,15 +200,24 @@ client.on('message', function (topic, message) {
     else if (topic.substr(0, topicACK.length - 1) == topicACK.substr(0, topicACK.length - 1)) { //check if topic is ACK
         var args = "";
         if (topic.indexOf("?") != -1) {
-            args = topic.substring(topic.indexOf("?"));
-            topic = topic.substr(0, topic.indexOf("?")-1);
+            args = topic.substring(topic.indexOf("?")+1);
+            topic = topic.substr(0, topic.indexOf("?"));
         }
         console.log("Args: ["+args+"], topic: ["+topic+"]");
         var mac = topic.split("/").pop();
-
         if(!devices[mac]) {
             console.log('unknown device ' + mac);
             return false;
+        } else {
+            if (args != "") {
+                var currentDevice = devices[mac];
+                var subArgs = args.split("&");
+                subArgs.forEach(function(element) {
+                    var parts = element.split("=");
+                    currentDevice[parts[0]] = parts[1];
+                });
+                console.log("Device: ", currentDevice);
+            }
         }
         if (devices[mac].isOnline == false) {
             console.log("Node " + mac + " went back online");
