@@ -7,6 +7,8 @@
  * asdf
  */
 
+#include <math.h>
+#include <DHT.h>
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
@@ -28,6 +30,12 @@ const uint8_t r1Pin = D1,
 
 //const uint8_t ledPins[] = {r1Pin, g1Pin, b1Pin};
 
+#define DHTPIN D4 
+#define DHTTYPE DHT11
+
+DHT dht(DHTPIN, DHTTYPE);
+ 
+
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
 long lastMsg = 0;
@@ -38,6 +46,9 @@ String clientID = "RGB_controller_" + thisMAC;
 bool otaInProgress = false;
 
 String domain = "RGB-LED-control";
+
+float humidity = NAN;
+float temperature = NAN;
 
 
 String subscriptions[] = {
@@ -152,6 +163,12 @@ void callback(char* topic, byte* payload, unsigned int length) {
   {
     long rssi = WiFi.RSSI();
     String response = String(domain + "/ack/" + thisMAC+"?rssi="+rssi);
+    if(!isnan(temperature)){
+      response+="&temperature="+String(temperature);
+    }
+    if(!isnan(humidity)){
+      response+="&humidity="+String(humidity);
+    }
     Serial.println(response);
     mqttClient.publish(response.c_str(), "ack");
   }
@@ -280,6 +297,7 @@ void setup() {
   mqttClient.setServer(mqtt_server, 1883);
   mqttClient.setCallback(callback);
   mqttTryReconnect();
+  dht.begin();
 }
 
 unsigned int loopCounter = 1;
@@ -305,6 +323,12 @@ void loop() {
     long rssi = WiFi.RSSI();
     Serial.print("RSSI: ");
     Serial.println(rssi);
+    temperature = dht.readTemperature();
+    humidity = dht.readHumidity();
+    Serial.print("Temperature: ");
+    Serial.println(temperature);
+    Serial.print("Humidty: ");
+    Serial.println(humidity);
   }
   if (WiFi.status() != WL_CONNECTED) {
     parseRGB("#000000");
