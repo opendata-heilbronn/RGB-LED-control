@@ -206,7 +206,7 @@ client.on('message', function (topic, message) {
         } else {
             if (message) {
                 var currentDevice = devices[mac];
-                var subArgs = message.indexOf("&") != -1  ? message.split("&") : [args];
+                var subArgs = message.indexOf("&") != -1  ? message.split("&") : [message];
                 subArgs.forEach(function(element) {
                     var parts = element.split("=");
                     currentDevice[parts[0]] = parts[1];
