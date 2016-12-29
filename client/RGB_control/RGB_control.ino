@@ -20,6 +20,10 @@
 
 #include "gammaTable.h"
 #include "config.h" //set your SSID and pass here
+
+#define DEBUG_ESP_HTTP_UPDATE true
+#define DEBUG_ESP_PORT Serial
+
 const char* mqtt_server = "192.168.178.168";
 
 #define DEBUG false //debug output
@@ -195,6 +199,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     switch(ret) {
      case HTTP_UPDATE_FAILED:
           Serial.println("[update] Update failed.");
+          Serial.println(ESPhttpUpdate.getLastErrorString());
           break;
      case HTTP_UPDATE_NO_UPDATES:
           Serial.println("[update] Update no Update.");
