@@ -11,7 +11,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
-// #include <ArduinoOTA.h>
+#include <ArduinoOTA.h>
 #include <PubSubClient.h>
 #include <sstream>
 
@@ -151,10 +151,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
   if (topicStr == subscriptions[0])
   {
     long rssi = WiFi.RSSI();
-    Serial.print("RSSI from ACK: ");
-    Serial.println(rssi);
-    Serial.println(String(domain + "/ack/" + thisMAC+"?rssi="+rssi));
-    mqttClient.publish(String(domain + "/ack/" + thisMAC+"?rssi="+rssi).c_str(), "ack");
+    String response = String(domain + "/ack/" + thisMAC+"?rssi="+rssi);
+    Serial.println(response);
+    mqttClient.publish(response.c_str(), "ack");
   }
   else if (topicStr == subscriptions[1])
   {
@@ -231,7 +230,7 @@ void disableLights() {
 
 void setupOTA()
 {
-/*  // Port defaults to 8266
+  // Port defaults to 8266
   ArduinoOTA.setPort(8266);
 
   // Hostname defaults to MAC address
@@ -262,7 +261,7 @@ void setupOTA()
     otaInProgress = false;
   });
   ArduinoOTA.begin();
-  Serial.println("[OTA] ready");*/
+  Serial.println("[OTA] ready");
 }
 
 
@@ -277,7 +276,7 @@ void setup() {
   setParsedRGB();
   Serial.begin(115200);
   setup_wifi();
-  //setupOTA();
+  setupOTA();
   mqttClient.setServer(mqtt_server, 1883);
   mqttClient.setCallback(callback);
   mqttTryReconnect();
@@ -287,7 +286,7 @@ unsigned int loopCounter = 1;
 unsigned long lastUpdate = millis();
 
 void loop() {
- // ArduinoOTA.handle();
+  ArduinoOTA.handle();
   if (!otaInProgress) {
     if (mqttClient.connected()) {
       mqttClient.loop();
