@@ -7,6 +7,11 @@
  * asdf
  */
 
+//#define DEBUG_ESP_HTTP_UPDATE true
+//#define DEBUG_ESP_PORT Serial
+#define DEBUG_HTTP_UPDATE(...) Serial.printf( __VA_ARGS__ )
+
+
 #include <math.h>
 #include <DHT.h>
 #include <Arduino.h>
@@ -21,8 +26,7 @@
 #include "gammaTable.h"
 #include "config.h" //set your SSID and pass here
 
-#define DEBUG_ESP_HTTP_UPDATE true
-#define DEBUG_ESP_PORT Serial
+
 
 const char* mqtt_server = "192.168.178.168";
 
@@ -194,6 +198,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
     parseFade(data);
     fadeActive = true;
   } else if (topicStr == subUpdateFirmware) {
+    Serial.println("MQTT disconnected");
+    mqttClient.disconnect();
     Serial.println("Downloading firmware...");
     t_httpUpdate_return ret  = ESPhttpUpdate.update(mqtt_server, 3000, "/firmware/rgblight.bin", Version);
     switch(ret) {
@@ -330,8 +336,7 @@ unsigned long lastUpdate = millis();
 void loop() {
   //ArduinoOTA.handle();
   if (!otaInProgress) {
-    if (mqttClient.connected()) {
-      mqttClient.loop();
+    if (mqttClient.loop()) {
       fadeLoop();
     } else {
       disableLights();
