@@ -22,7 +22,7 @@
 const char* mqtt_server = "192.168.178.168";
 
 #define DEBUG false //debug output
-String Version = "v0.1.3-dev";
+String Version = "v0.2.1";
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,
@@ -44,6 +44,7 @@ int value = 0;
 String thisMAC = WiFi.macAddress();
 String clientID = "RGB_controller_" + thisMAC;
 bool otaInProgress = false;
+bool firstRead = true;
 
 String domain = "RGB-LED-control";
 
@@ -266,7 +267,7 @@ void setupOTA()
     otaInProgress = false;
   });
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-    Serial.printf("[OTA] Progress: %u%%\r", (progress / (total / 100)));
+    Serial.printf("[OTA] Progress: %u%%\r\n", (progress / (total / 100)));
   });
   ArduinoOTA.onError([](ota_error_t error) {
     Serial.printf("[OTA] Error[%u]: ", error);
@@ -318,17 +319,15 @@ void loop() {
       }   
     }
   }
-  if (millis() - lastUpdate > 5000) {
+  if (firstRead && (millis() - lastUpdate > 3000) || (millis() - lastUpdate > 60000)) {
     lastUpdate = millis();
-    long rssi = WiFi.RSSI();
-    Serial.print("RSSI: ");
-    Serial.println(rssi);
     temperature = dht.readTemperature();
     humidity = dht.readHumidity();
     Serial.print("Temperature: ");
     Serial.println(temperature);
     Serial.print("Humidty: ");
     Serial.println(humidity);
+    firstRead = false;
   }
   if (WiFi.status() != WL_CONNECTED) {
     parseRGB("#000000");
