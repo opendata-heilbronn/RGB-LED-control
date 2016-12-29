@@ -85,7 +85,7 @@ app.get('/firmware/rgblight.bin', function (req, res) {
     var stats = fs.statSync(firmwareFile);
     res.writeHead(200, {
         'Content-Type': 'application/octet-stream',
-        'Content-Disposition', 'attachment; filename=rgblight.bin',
+        'Content-Disposition': 'attachment; filename=rgblight.bin',
         'Content-Length': stats["size"]
     });
     res.end(firmware, 'binary');
