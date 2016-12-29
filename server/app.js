@@ -90,5 +90,4 @@ app.get('/firmware/rgblight.bin', function (req, res) {
         'Content-Length': stats["size"]
     });
     res.end(firmware, 'binary');
-    res.send({"status": "success"});
 });
