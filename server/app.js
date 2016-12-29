@@ -81,6 +81,7 @@ app.get('/api/anim/:name/start', function (req, res) {
 });
 
 app.get('/firmware/rgblight.bin', function (req, res) {
+    console.log("Firmware requested");
     var firmwareFile = '../client/RGB_control/RGB_control.ino.nodemcu.bin';
     var firmware = fs.readFileSync(firmwareFile);
     var stats = fs.statSync(firmwareFile);
