@@ -204,7 +204,7 @@ client.on('message', function (topic, message) {
             console.log('unknown device ' + mac);
             return false;
         } else {
-            if (message) {
+            if (message && message != "") {
                 var currentDevice = devices[mac];
                 var subArgs = message.indexOf("&") != -1  ? message.split("&") : [message];
                 subArgs.forEach(function(element) {
