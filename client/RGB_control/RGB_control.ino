@@ -27,7 +27,6 @@
 #include "config.h" //set your SSID and pass here
 
 
-
 const char* mqtt_server = "192.168.178.168";
 
 #define DEBUG false //debug output
