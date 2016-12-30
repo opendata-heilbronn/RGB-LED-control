@@ -56,11 +56,13 @@
 
 </head>
 <body>
-<div style="padding:10px" >Animation: <select id="anims"></select>
+<div style="padding:10px">Animation: <select id="anims"></select>
     <input type="button" id="animButton" value="Starten">
     <input type="button" id="lighthouseButton" value="Lighthouse">
     <input type="button" id="partyButton" value="Party">
     <input type="button" id="masterButton" value="Master Off">
+
+    <input type="color" id="colorpicker" value="#000000" style="width:120px">
 
 </div>
 <div class="container">
@@ -116,112 +118,120 @@
 
 </svg>
 
+    <script>
+        $(function () {
 
-</div>
-
-<script>
-    $(function () {
-
-        $.getJSON("http://192.168.178.168:3000/api/anim").then(function(result) {
-            result["animations"].forEach(function(element) {
-                $("#anims").append($("<option>").text(element));
+            $.getJSON("http://192.168.178.168:3000/api/anim").then(function (result) {
+                result["animations"].forEach(function (element) {
+                    $("#anims").append($("<option>").text(element));
+                });
             });
-        });
 
-        $('#animButton').on("click", function() {
-            var anim = $("#anims option:selected").text();
-            if (anim == "stop") {
-                $.getJSON("http://192.168.178.168:3000/api/anim/stop");
-            } else {
-                $.getJSON("http://192.168.178.168:3000/api/anim/"+anim+"/start");
-            }
-        });
-        $('#masterButton').on("click", function() {
-            $.post("http://192.168.178.168:3000/api/devices/masterOverride");
-        });
-        $('#partyButton').on("click", function() {
-            $.post("http://192.168.178.168:3000/api/devices/party");
-        });
-        $('#lighthouseButton').on("click", function() {
-            $.post("http://192.168.178.168:3000/api/devices/lighthouse");
-        });
-
-        var roomsCache = null;
-
-        var appendRoom = function (device) {
-            var htmlContent = "Raum: " + device.room + " / " + device.version;
-
-            var now = moment();
-            var date = moment(new Date(device.lastSeen));
-
-            htmlContent += "<br>" + device.mac+" / "+device.rssi;
-
-            htmlContent += "<br>" + date.format("DD.MM.YYYY, HH:mm:ss");
-            var diffSec = now.diff(date, "seconds");
-            if (diffSec > 5) {
-                htmlContent += " vor " + diffSec + " sec"
-            }
-
-            if (device.temperature) {
-                htmlContent += "<br>Temperatur: " + device.temperature + "°C";
-            }
-            if (device.humidity) {
-                htmlContent += "<br>Luftfeuchte: " + device.humidity + "%";
-            }
-
-            $("#content").append($("<div class='room'/>").html(htmlContent));
-        };
-
-        var updateRooms = function (rooms) {
-            $("#content").empty();
-
-            var deviceArray = [];
-
-            Object.keys(rooms).forEach(function (key) {
-                var device = rooms[key];
-                device["mac"] = key;
-                deviceArray.push(device);
-                var room = device.room;
-                var element = $("#raum" + room);
-                element.attr("fill", device.color);
-                if (device.isOnline) {
-                    element.addClass("online");
+            $('#animButton').on("click", function () {
+                var anim = $("#anims option:selected").text();
+                if (anim == "stop") {
+                    $.getJSON("http://192.168.178.168:3000/api/anim/stop");
                 } else {
-                    element.addClass("offline");
+                    $.getJSON("http://192.168.178.168:3000/api/anim/" + anim + "/start");
+                }
+            });
+            $('#masterButton').on("click", function () {
+                $.post("http://192.168.178.168:3000/api/devices/masterOverride");
+            });
+            $('#partyButton').on("click", function () {
+                $.post("http://192.168.178.168:3000/api/devices/party");
+            });
+            $('#lighthouseButton').on("click", function () {
+                $.post("http://192.168.178.168:3000/api/devices/lighthouse");
+            });
+            $('#colorpicker').on("change", function () {
+                var color = $("#colorpicker").val();
+                console.log("Color: "+color);
+                $.ajax({
+                    url : "http://192.168.178.168:3000/api/devices/all/rgb",
+                    type: "POST",
+                    data: JSON.stringify({"color": color}),
+                    contentType: "application/json; charset=utf-8",
+                    dataType   : "json"
+                });
+            });
+
+            var roomsCache = null;
+
+            var appendRoom = function (device) {
+                var htmlContent = "Raum: " + device.room + " / " + device.version;
+
+                var now = moment();
+                var date = moment(new Date(device.lastSeen));
+
+                htmlContent += "<br>" + device.mac + " / " + device.rssi;
+
+                htmlContent += "<br>" + date.format("DD.MM.YYYY, HH:mm:ss");
+                var diffSec = now.diff(date, "seconds");
+                if (diffSec > 5) {
+                    htmlContent += " vor " + diffSec + " sec"
+                }
+
+                if (device.temperature) {
+                    htmlContent += "<br>Temperatur: " + device.temperature + "°C";
+                }
+                if (device.humidity) {
+                    htmlContent += "<br>Luftfeuchte: " + device.humidity + "%";
+                }
+
+                $("#content").append($("<div class='room'/>").html(htmlContent));
+            };
+
+            var updateRooms = function (rooms) {
+                $("#content").empty();
+
+                var deviceArray = [];
+
+                Object.keys(rooms).forEach(function (key) {
+                    var device = rooms[key];
+                    device["mac"] = key;
+                    deviceArray.push(device);
+                    var room = device.room;
+                    var element = $("#raum" + room);
+                    element.attr("fill", device.color);
+                    if (device.isOnline) {
+                        element.addClass("online");
+                    } else {
+                        element.addClass("offline");
+                    }
+
+                });
+                deviceArray.sort(function (d1, d2) {
+                    return d1.room - d2.room;
+                });
+                deviceArray.forEach(appendRoom);
+            };
+
+            $.getJSON("http://192.168.178.168:3000/api/devices").then(function (result) {
+                roomsCache = result;
+                updateRooms(result);
+            });
+
+            const socket = io('http://192.168.178.168:3000/');
+            socket.on('connect', function () {
+                console.log('connected to socket.io')
+            });
+            socket.on('devices', function (data) {
+                roomsCache = data;
+                updateRooms(data);
+                console.log('received socket.io devices update', data);
+            });
+            socket.on('deviceUpdate', function (data) {
+                console.log('received socket.io device update', data);
+                if (roomsCache) {
+                    var device = roomsCache[data.mac ? data.mac : data.key];
+                    $("#raum" + device.room).removeClass("offline").removeClass("online").addClass(data.status);
                 }
 
             });
-            deviceArray.sort(function (d1, d2) {
-                return d1.room - d2.room;
-            });
-            deviceArray.forEach(appendRoom);
-        };
-
-        $.getJSON("http://192.168.178.168:3000/api/devices").then(function (result) {
-            roomsCache = result;
-            updateRooms(result);
         });
 
-        const socket = io('http://192.168.178.168:3000/');
-        socket.on('connect', function () {
-            console.log('connected to socket.io')
-        });
-        socket.on('devices', function (data) {
-            roomsCache = data;
-            updateRooms(data);
-            console.log('received socket.io devices update', data);
-        });
-        socket.on('deviceUpdate', function (data) {
-            console.log('received socket.io device update', data);
-            if (roomsCache) {
-                var device = roomsCache[data.mac ? data.mac : data.key];
-                $("#raum" + device.room).removeClass("offline").removeClass("online").addClass(data.status);
-            }
-
-        });
-    });
-
-</script>
+    </script>
 </body>
 
 </html>
