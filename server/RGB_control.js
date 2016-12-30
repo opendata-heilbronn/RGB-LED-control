@@ -13,6 +13,7 @@ var util = require('util');
 var mqtt = require('mqtt');
 //var express = require('express');
 var hsl2rgb = require('hsv-rgb');
+var request = require('request');
 
 //additionally write console.log to log file
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags: 'a'});
