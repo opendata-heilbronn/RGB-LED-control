@@ -104,6 +104,7 @@ function fadeOff(state) {
 function turnOffNow() {
     stopLighthouse();
     Object.keys(devices).forEach(function (key) {
+        stopInterval(key);
         sendRGB(key, "#000000");
     });
 }
