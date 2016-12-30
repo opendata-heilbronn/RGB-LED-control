@@ -247,9 +247,29 @@ function sendFirmwareUpdate() {
     client.publish("RGB-LED-control/updateFirmware", "");
 }
 
+function saveSensorData() {
+    var sensors = [];
+
+    var now = Date.now();
+    Object.keys(devices).forEach(function (key) {
+        var device = devices[key];
+        if (device.lastSeen + 60000 > now) {
+            if (device.temperature) {
+                sensors.push({"sensorName": "cowo.raum"+device.room+".temperature", "value": device.temperature})
+            }
+            if (device.humidity) {
+                sensors.push({"sensorName": "cowo.raum"+device.room+".humidity", "value": device.humidity})
+            }
+        }
+    });
+
+    console.log("Sensordate to send: "+JSON.stringify(sensors));
+}
+
 
 setInterval(keepalive, 5000);
 setInterval(sendDevices, 1000);
+setInterval(saveSensorData, 60000);
 
 module.exports = {
     devices, fadeOff, roomToMAC, sendDevices, sendFade, startLighthouse, stopLighthouse,
