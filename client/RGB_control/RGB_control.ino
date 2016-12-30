@@ -31,7 +31,7 @@
 const char* mqtt_server = "192.168.178.168";
 
 #define DEBUG false //debug output
-String Version = "v0.3.0";
+String Version = "v0.3.1-iot";
 
 const uint8_t r1Pin = D1,
               g1Pin = D2,
@@ -334,8 +334,6 @@ unsigned int loopCounter = 1;
 unsigned long lastUpdate = millis();
 
 void loop() {
-  //ArduinoOTA.handle();
-  if (!otaInProgress) {
     if (mqttClient.loop()) {
       fadeLoop();
     } else {
@@ -346,7 +344,6 @@ void loop() {
         mqttTryReconnect();  
       }   
     }
-  }
   if (firstRead && (millis() - lastUpdate > 3000) || (millis() - lastUpdate > 60000)) {
     lastUpdate = millis();
     temperature = dht.readTemperature();
@@ -360,6 +357,10 @@ void loop() {
   if (WiFi.status() != WL_CONNECTED) {
     parseRGB("#000000");
     setParsedRGB();
-    delay(100);
+    delay(199);
+    Serial.print(".");
+    digitalWrite(BUILTIN_LED, LOW);
+    delay(1);
+    digitalWrite(BUILTIN_LED, HIGH);
   }
 }
