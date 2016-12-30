@@ -260,10 +260,20 @@ function saveSensorData() {
             if (device.humidity) {
                 sensors.push({"sensorName": "cowo.raum"+device.room+".humidity", "value": device.humidity})
             }
+            if (device.rssi) {
+                sensors.push({"sensorName": "cowo.raum"+device.room+".rssi", "value": device.rssi})
+            }
         }
     });
 
-    console.log("Sensordate to send: "+JSON.stringify(sensors));
+    if (sensors.length > 0) {
+        request({
+            url: "http://api.grundid.de/sensor",
+            method: "POST",
+            json: sensors
+        });
+    }
+    console.log("Sensordata: "+JSON.stringify(sensors));
 }
 
 
