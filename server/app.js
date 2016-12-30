@@ -36,11 +36,11 @@ app.post('/api/devices/:mac/rgb', function (req, res) {
 
 app.post('/api/devices/:mode', function (req, res) { //{"state": 0/1}
     if (req.params.mode == "masterOverride") {
+        rgbAnim.stopAnim();
         rgbControls.turnOffNow();
     } else if (req.params.mode == "party") {
         const macs = rgbControls.sets["all"];
         macs.forEach(rgbControls.startParty);
-
     } else if (req.params.mode == "lighthouse") {
         rgbAnim.stopAnim();
         rgbControls.startLighthouse();
