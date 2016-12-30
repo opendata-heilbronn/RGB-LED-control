@@ -17,7 +17,7 @@ app.post('/api/devices/:mac/rgb', function (req, res) {
     const macs = rgbControls.sets[req.params.mac] ? rgbControls.sets[req.params.mac] : [req.params.mac];
     if (req.body.color === 'lighthouse') {
         rgbAnim.stopAnim();
-        rgbControls.startLighthouse();
+        rgbControls.stopLighthouse();
     }
     else {
         macs.forEach(mac => {
@@ -34,8 +34,17 @@ app.post('/api/devices/:mac/rgb', function (req, res) {
     res.sendStatus(200);
 });
 
-app.post('/api/devices/masterOverride', function (req, res) { //{"state": 0/1}
-    rgbControls.setMasterOverride(req.body.state);
+app.post('/api/devices/:mode', function (req, res) { //{"state": 0/1}
+    if (req.params.mode == "masterOverride") {
+        rgbControls.turnOffNow();
+    } else if (req.params.mode == "party") {
+        const macs = rgbControls.sets["all"];
+        macs.forEach(rgbControls.startParty);
+
+    } else if (req.params.mode == "lighthouse") {
+        rgbAnim.stopAnim();
+        rgbControls.startLighthouse();
+    }
     res.sendStatus(200);
 });
 

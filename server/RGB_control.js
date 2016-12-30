@@ -52,11 +52,10 @@ var devices = {
 };
 
 var roomDevices = {};
-function convertDevicesToRooms()
-{
-  Object.keys(devices).forEach(function(key){
-    roomDevices[devices[key].room] = key;
-  });
+function convertDevicesToRooms() {
+    Object.keys(devices).forEach(function (key) {
+        roomDevices[devices[key].room] = key;
+    });
 }
 convertDevicesToRooms();
 
@@ -85,29 +84,26 @@ function sendFade(mac, rgb, fadeTime) //
     //console.log(mac + " <fade " + rgb + " in " + fadeTime + "ms");
 }
 
-function roomToMAC(roomNum)
-{
-  return roomDevices[roomNum];
+function roomToMAC(roomNum) {
+    return roomDevices[roomNum];
 }
 
-function fadeOff(state)
-{
-  if(state == 0)
-  {
-    Object.keys(devices).forEach(function(key){
-      stopInterval(key); //stop party mode
-      sendFade(key, "#000000", 10000);
-    });
-  } else if(state == 1)
-  {
-    Object.keys(devices).forEach(function(key){
-      startParty(key); //start party mode
-    });
-  }
+function fadeOff(state) {
+    if (state == 0) {
+        Object.keys(devices).forEach(function (key) {
+            stopInterval(key); //stop party mode
+            sendFade(key, "#000000", 10000);
+        });
+    } else if (state == 1) {
+        Object.keys(devices).forEach(function (key) {
+            startParty(key); //start party mode
+        });
+    }
 }
 
 function turnOffNow() {
-    Object.keys(devices).forEach(function(key){
+    stopLighthouse();
+    Object.keys(devices).forEach(function (key) {
         sendRGB(key, "#000000");
     });
 }
@@ -151,29 +147,34 @@ function party(mac) {
 }
 
 var lightHouseInterval;
-function startLighthouse()
-{
-  if(!lightHouseInterval)
-  {
-    lightHouseInterval = setInterval(lightHouseTick, 500);
-  }
-  else {
-    clearInterval(lightHouseInterval);
-    lightHouseInterval = null;
-  }
+function startLighthouse() {
+    if (!lightHouseInterval) {
+        lightHouseInterval = setInterval(lightHouseTick, 500);
+    }
+    else {
+        clearInterval(lightHouseInterval);
+        lightHouseInterval = null;
+    }
 }
+
+function stopLighthouse() {
+    if (lightHouseInterval) {
+        clearInterval(lightHouseInterval);
+        lightHouseInterval = null;
+    }
+}
+
 
 var lightHouseIdx = 0;
 var prevColor;
-function lightHouseTick()
-{
-  var macs = Object.keys(devices);
-  var prevMAC = macs[lightHouseIdx%14];
-  var curMAC = macs[(lightHouseIdx+1)%14]; //handle overflow
-  sendFade(prevMAC, prevColor, 250);
-  prevColor = devices[curMAC].color;
-  sendFade(curMAC, "#FFFFFF", 250);
-  lightHouseIdx++;
+function lightHouseTick() {
+    var macs = Object.keys(devices);
+    var prevMAC = macs[lightHouseIdx % 14];
+    var curMAC = macs[(lightHouseIdx + 1) % 14]; //handle overflow
+    sendFade(prevMAC, prevColor, 250);
+    prevColor = devices[curMAC].color;
+    sendFade(curMAC, "#FFFFFF", 250);
+    lightHouseIdx++;
 }
 
 const sendDevices = () => {
@@ -190,7 +191,7 @@ client.on('message', function (topic, message) {
     //console.log('message received');
     if (topic == topicRegistration) {
         const split = message.toString().split(';');
-        if(!devices[split[0]]) {
+        if (!devices[split[0]]) {
             console.log('unknown device ' + message.toString());
             return false;
         }
@@ -198,9 +199,9 @@ client.on('message', function (topic, message) {
         console.log("New registration from MAC " + split[0] + ', Version: ' + split[1]);
     }
     else if (topic.substr(0, topicACK.length - 1) == topicACK.substr(0, topicACK.length - 1)) { //check if topic is ACK
-        console.log("Args: ["+message+"], topic: ["+topic+"]");
+        console.log("Args: [" + message + "], topic: [" + topic + "]");
         var mac = topic.split("/").pop();
-        if(!devices[mac]) {
+        if (!devices[mac]) {
             console.log('unknown device ' + mac);
             return false;
         } else {
@@ -234,21 +235,22 @@ function keepalive() {
             if (devices[key].isOnline == true) {
                 console.log("Node " + key + " went offline");
                 sendDevices();
-                io.emit('deviceUpdate', {mac:key, status: 'offline'});
+                io.emit('deviceUpdate', {mac: key, status: 'offline'});
             }
             devices[key].isOnline = false;
         }
     });
 }
 
-function sendFirmwareUpdate()
-{
-    client.publish("RGB-LED-control/updateFirmware","");
+function sendFirmwareUpdate() {
+    client.publish("RGB-LED-control/updateFirmware", "");
 }
 
 
 setInterval(keepalive, 5000);
 setInterval(sendDevices, 1000);
 
-module.exports = {devices,  fadeOff, roomToMAC, sendDevices, sendFade,
-    sendRGB, sets, startParty, stopInterval, turnOffNow, sendFirmwareUpdate};
+module.exports = {
+    devices, fadeOff, roomToMAC, sendDevices, sendFade, startLighthouse, stopLighthouse,
+    sendRGB, sets, startParty, stopInterval, turnOffNow, sendFirmwareUpdate
+};

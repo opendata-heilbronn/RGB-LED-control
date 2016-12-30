@@ -16,8 +16,8 @@ var crons = {
     '00 05 18-23 * * *':'party',
     '00 59 0-6 * * *':'cowoStack',
     '00 00 0-7 * * *':'cowoRotate',
-    '00 05 0-7 * * *':'party',
+    '00 05 0-7 * * *':'party'
     
-}
+};
 
 module.exports = {initCrons};

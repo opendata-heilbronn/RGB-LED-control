@@ -1,6 +1,9 @@
 <html>
 <head>
     <style>
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+        }
 
         .raum {
             stroke: #0000FF;
@@ -31,17 +34,40 @@
             stroke-width: 7px;
         }
 
+        .container {
+            display: flex;
+        }
+
+        .roomslist {
+            width: 200px;
+            font-size: 0.8em;
+        }
+
+        .room {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #000000;
+        }
+
     </style>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="application/javascript"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+
 </head>
 <body>
-
-<div id="content">
+<div style="padding:10px" >Animation: <select id="anims"></select>
+    <input type="button" id="animButton" value="Starten">
+    <input type="button" id="lighthouseButton" value="Lighthouse">
+    <input type="button" id="partyButton" value="Party">
+    <input type="button" id="masterButton" value="Master Off">
 
 </div>
-<svg width="100%" height="90%" viewBox="0 0 1292 1253" version="1.1"
+<div class="container">
+    <div id="content" class="roomslist">
+
+    </div>
+    <svg width="100%" height="90%" viewBox="0 0 1292 1253" version="1.1"
      xmlns="http://www.w3.org/2000/svg"  xml:space="preserve"
      style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
 
@@ -86,17 +112,75 @@
 <path id="raum11" class="raum" d="M163.516,874.781l0,122.336l-87.701,87.701l-67.565,0.22l0,-210.257l155.266,0Z" />
 <path id="raum13" class="raum" d="M210.774,1243.95l0,-181.066l238.571,0l0,181.066l-238.571,0l238.571,0l-238.571,0Z" />
 <path id="raum14" class="raum" d="M663.544,925.691l-153.445,0l0,77.093l-60.754,60.754l0,180.408l153.824,0l60.375,-79.564l0,-238.691l0,0Z" />
-<path id="raum1" class="raum" d="M1283.33,218.66l0,365.206l-64.604,65.288l-41.601,0l0,-165.82l-60.814,0l0,-81.912l-71.951,-71.951l-141.953,0l0,-110.811l380.923,0Z" /></svg>
+<path id="raum1" class="raum" d="M1283.33,218.66l0,365.206l-64.604,65.288l-41.601,0l0,-165.82l-60.814,0l0,-81.912l-71.951,-71.951l-141.953,0l0,-110.811l380.923,0Z" />
 
+</svg>
+
+
+</div>
 
 <script>
     $(function () {
 
+        $.getJSON("http://192.168.178.168:3000/api/anim").then(function(result) {
+            result["animations"].forEach(function(element) {
+                $("#anims").append($("<option>").text(element));
+            });
+        });
+
+        $('#animButton').on("click", function() {
+            var anim = $("#anims option:selected").text();
+            if (anim == "stop") {
+                $.getJSON("http://192.168.178.168:3000/api/anim/stop");
+            } else {
+                $.getJSON("http://192.168.178.168:3000/api/anim/"+anim+"/start");
+            }
+        });
+        $('#masterButton').on("click", function() {
+            $.post("http://192.168.178.168:3000/api/devices/masterOverride");
+        });
+        $('#partyButton').on("click", function() {
+            $.post("http://192.168.178.168:3000/api/devices/party");
+        });
+        $('#lighthouseButton').on("click", function() {
+            $.post("http://192.168.178.168:3000/api/devices/lighthouse");
+        });
+
         var roomsCache = null;
 
-        var updateRooms = function(rooms) {
+        var appendRoom = function (device) {
+            var htmlContent = "Raum: " + device.room + " / " + device.version;
+
+            var now = moment();
+            var date = moment(new Date(device.lastSeen));
+
+            htmlContent += "<br>" + device.mac+" / "+device.rssi;
+
+            htmlContent += "<br>" + date.format("DD.MM.YYYY, HH:mm:ss");
+            var diffSec = now.diff(date, "seconds");
+            if (diffSec > 5) {
+                htmlContent += " vor " + diffSec + " sec"
+            }
+
+            if (device.temperature) {
+                htmlContent += "<br>Temperatur: " + device.temperature + "°C";
+            }
+            if (device.humidity) {
+                htmlContent += "<br>Luftfeuchte: " + device.humidity + "%";
+            }
+
+            $("#content").append($("<div class='room'/>").html(htmlContent));
+        };
+
+        var updateRooms = function (rooms) {
+            $("#content").empty();
+
+            var deviceArray = [];
+
             Object.keys(rooms).forEach(function (key) {
                 var device = rooms[key];
+                device["mac"] = key;
+                deviceArray.push(device);
                 var room = device.room;
                 var element = $("#raum" + room);
                 element.attr("fill", device.color);
@@ -105,7 +189,12 @@
                 } else {
                     element.addClass("offline");
                 }
+
             });
+            deviceArray.sort(function (d1, d2) {
+                return d1.room - d2.room;
+            });
+            deviceArray.forEach(appendRoom);
         };
 
         $.getJSON("http://192.168.178.168:3000/api/devices").then(function (result) {
@@ -126,7 +215,7 @@
             console.log('received socket.io device update', data);
             if (roomsCache) {
                 var device = roomsCache[data.mac ? data.mac : data.key];
-                $("#raum"+device.room).removeClass("offline").removeClass("online").addClass(data.status);
+                $("#raum" + device.room).removeClass("offline").removeClass("online").addClass(data.status);
             }
 
         });
