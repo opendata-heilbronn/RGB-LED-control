@@ -117,11 +117,14 @@
 <path id="raum1" class="raum" d="M1283.33,218.66l0,365.206l-64.604,65.288l-41.601,0l0,-165.82l-60.814,0l0,-81.912l-71.951,-71.951l-141.953,0l0,-110.811l380.923,0Z" />
 
 </svg>
-
+</div>
     <script>
+
+        var host = window.location.host.indexOf("localhost") != -1 ? "http://192.168.178.168:8082" : "";
+        console.log("Host: " + window.location.host);
         $(function () {
 
-            $.getJSON("http://192.168.178.168:3000/api/anim").then(function (result) {
+            $.getJSON(host + "/api/anim").then(function (result) {
                 result["animations"].forEach(function (element) {
                     $("#anims").append($("<option>").text(element));
                 });
@@ -130,29 +133,29 @@
             $('#animButton').on("click", function () {
                 var anim = $("#anims option:selected").text();
                 if (anim == "stop") {
-                    $.getJSON("http://192.168.178.168:3000/api/anim/stop");
+                    $.getJSON(host + "/api/anim/stop");
                 } else {
-                    $.getJSON("http://192.168.178.168:3000/api/anim/" + anim + "/start");
+                    $.getJSON(host + "/api/anim/" + anim + "/start");
                 }
             });
             $('#masterButton').on("click", function () {
-                $.post("http://192.168.178.168:3000/api/devices/masterOverride");
+                $.post(host + "/api/devices/masterOverride");
             });
             $('#partyButton').on("click", function () {
-                $.post("http://192.168.178.168:3000/api/devices/party");
+                $.post(host + "/api/devices/party");
             });
             $('#lighthouseButton').on("click", function () {
-                $.post("http://192.168.178.168:3000/api/devices/lighthouse");
+                $.post(host + "/api/devices/lighthouse");
             });
             $('#colorpicker').on("change", function () {
                 var color = $("#colorpicker").val();
-                console.log("Color: "+color);
+                console.log("Color: " + color);
                 $.ajax({
-                    url : "http://192.168.178.168:3000/api/devices/all/rgb",
+                    url: host + "/api/devices/all/rgb",
                     type: "POST",
                     data: JSON.stringify({"color": color}),
                     contentType: "application/json; charset=utf-8",
-                    dataType   : "json"
+                    dataType: "json"
                 });
             });
 
@@ -207,12 +210,12 @@
                 deviceArray.forEach(appendRoom);
             };
 
-            $.getJSON("http://192.168.178.168:3000/api/devices").then(function (result) {
+            $.getJSON(host + "/api/devices").then(function (result) {
                 roomsCache = result;
                 updateRooms(result);
             });
 
-            const socket = io('http://192.168.178.168:3000/');
+            const socket = io(host);
             socket.on('connect', function () {
                 console.log('connected to socket.io')
             });
@@ -232,6 +235,7 @@
         });
 
     </script>
+
 </body>
 
 </html>
