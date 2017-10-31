@@ -68,9 +68,9 @@ Object.keys(devices).forEach(device => deviceObjs[device] = {});
 
 var sets = {
     "all": Object.keys(devices),
-    "windows": Object.keys(devices.slice(0,4)),
-    "counter": Object.keys(devices.slice(4)),
-    "codingPen": Object.keys(devices.slice(5))
+    "windows": Object.keys(devices).slice(0,4),
+    "counter": Object.keys(devices).slice(4),
+    "codingPen": Object.keys(devices).slice(5)
     /*"segment1": Object.keys(devices).slice(0, 4),
     "segment2": Object.keys(devices).slice(4, 8),
     "segment3": Object.keys(devices).slice(8)*/
