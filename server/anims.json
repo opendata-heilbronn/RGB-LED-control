@@ -2207,90 +2207,90 @@
         {
           "room": 1,
           "color": "#FF0000",
-          "fade": 1000
+          "fade": 500
         },
         {
           "room": 2,
           "color": "#000000",
-          "fade": 1000
+          "fade": 500
         }
       ],
-      "pause": 750
+      "pause": 500
     },
     {
       "frameData": [
         {
           "room": 2,
           "color": "#FF0000",
-          "fade": 1000
+          "fade": 500
         },
         {
           "room": 1,
           "color": "#000000",
-          "fade": 1000
+          "fade": 500
         }
       ],
-      "pause": 750
+      "pause": 500
     },
     {
       "frameData": [
         {
           "room": 2,
           "color": "#000000",
-          "fade": 1000
+          "fade": 500
         },
         {
           "room": 3,
           "color": "#FF0000",
-          "fade": 1000
+          "fade": 500
         }
       ],
-      "pause": 750
+      "pause": 500
     },
     {
       "frameData": [
         {
           "room": 3,
           "color": "#000000",
-          "fade": 1000
+          "fade": 500
         },
         {
           "room": 4,
           "color": "#FF0000",
-          "fade": 1000
+          "fade": 500
         }
       ],
-      "pause": 750
+      "pause": 500
     },
     {
       "frameData": [
         {
           "room": 3,
           "color": "#FF0000",
-          "fade": 1000
+          "fade": 500
         },
         {
           "room": 4,
           "color": "#000000",
-          "fade": 1000
+          "fade": 500
         }
       ],
-      "pause": 750
+      "pause": 500
     },
     {
       "frameData": [
         {
           "room": 2,
           "color": "#FF0000",
-          "fade": 1000
+          "fade": 500
         },
         {
           "room": 3,
           "color": "#000000",
-          "fade": 1000
+          "fade": 500
         }
       ],
-      "pause": 750
+      "pause": 500
     }
   ]
 }
