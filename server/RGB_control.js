@@ -36,7 +36,7 @@ var topicControl = domain + "/data/RGB/";
 var topicFade = domain + "/data/fade/";
 
 var devices = {
-    "5C:CF:7F:8B:F0:70": {room: 1}, //Window 1
+    "5C:CF:7F:1D:BB:11": {room: 1}, //Window 1
     "5C:CF:7F:1B:6F:85": {room: 2}, //       2
     "5C:CF:7F:8B:C5:03": {room: 3}, //       3
     "5C:CF:7F:88:1E:04": {room: 4}, //       4
