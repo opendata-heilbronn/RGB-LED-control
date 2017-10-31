@@ -64,15 +64,17 @@ function startAnim(name) {
 
 function changeRoom(obj, roomNumber) {
     var mac = rgbControls.roomToMAC(roomNumber);
-
-    if (obj.fade == 0) {
-        rgbControls.sendRGB(mac, obj.color);
+    if(mac !== undefined) {
+        if (obj.fade == 0) {
+            rgbControls.sendRGB(mac, obj.color);
+        }
+        else {
+            rgbControls.sendFade(mac, obj.color, obj.fade);
+        }
+    
+       rgbControls.sendDevices();
     }
-    else {
-        rgbControls.sendFade(mac, obj.color, obj.fade);
-    }
-
-   rgbControls.sendDevices();
+    
 }
 
 function doFrame(frame) {

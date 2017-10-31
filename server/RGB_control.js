@@ -44,14 +44,14 @@ var devices = {
     "5C:CF:7F:8B:C6:AA": {room: 6}, //Coding Pen
 
     // currently offline nodes:
-    "18:FE:34:CC:FC:EA": {room: 20},
-    "18:FE:34:D4:2E:BD": {room: 21},
-    "5C:CF:7F:88:1B:5D": {room: 22},
-    "18:FE:34:D3:F5:7F": {room: 23},
-    "5C:CF:7F:88:1A:13": {room: 24},
-    "5C:CF:7F:8B:EF:42": {room: 25}, //Vale
-    "5C:CF:7F:88:1D:A0": {room: 26},
-    "18:FE:34:E1:AF:AD": {room: 27}, //Vale
+    "18:FE:34:CC:FC:EA": {room:  7},
+    "18:FE:34:D4:2E:BD": {room:  8},
+    "5C:CF:7F:88:1B:5D": {room:  9},
+    "18:FE:34:D3:F5:7F": {room: 10},
+    "5C:CF:7F:88:1A:13": {room: 11},
+    "5C:CF:7F:8B:EF:42": {room: 12}, //Vale
+    "5C:CF:7F:88:1D:A0": {room: 13},
+    "18:FE:34:E1:AF:AD": {room: 14}, //Vale
     };
 
 var roomDevices = {};
