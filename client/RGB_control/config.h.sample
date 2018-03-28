@@ -1,3 +1,5 @@
+//replace placeholder values and rename file to "config.h"
+
 const char *ssid = "SSIDHERE"; // your network SSID (name)
 const char *pass = "PASSHERE"; // your network password
 const char* mqtt_server = "SERVERIPHERE";
