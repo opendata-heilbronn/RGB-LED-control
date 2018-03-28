@@ -11,7 +11,7 @@ import PageLoadingIndicator from "./utils/PageLoadingIndicator";
 import {Card, CardTitle, CardText} from "material-ui/Card";
 
 class DeviceControl extends Component {
-    state = {device: 'all'};
+    state = {device: 'scene'};
 
     onSubmit(color) {
         const {dispatch} = this.props;
