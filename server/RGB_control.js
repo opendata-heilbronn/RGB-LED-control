@@ -36,15 +36,16 @@ var topicControl = domain + "/data/RGB/";
 var topicFade = domain + "/data/fade/";
 
 var devices = {
-    "5C:CF:7F:1D:BB:11": {room: 1}, //Window 1
+    "68:C6:3A:9F:4D:88": {room: 1}, //Window 1
     "5C:CF:7F:1B:6F:85": {room: 2}, //       2
     "5C:CF:7F:8B:C5:03": {room: 3}, //       3
     "5C:CF:7F:88:1E:04": {room: 4}, //       4
     "18:FE:34:D3:F0:B2": {room: 5}, //Counter
     "5C:CF:7F:8B:C6:AA": {room: 6}, //Coding Pen
+    "5C:CF:7F:1D:BB:11": {room: 7}, //Farmbot Room
 
     // currently offline nodes:
-    "18:FE:34:CC:FC:EA": {room:  7},
+    //"18:FE:34:CC:FC:EA": {room:  7},
     "18:FE:34:D4:2E:BD": {room:  8},
     "5C:CF:7F:88:1B:5D": {room:  9},
     "18:FE:34:D3:F5:7F": {room: 10},
@@ -53,6 +54,18 @@ var devices = {
     "5C:CF:7F:88:1D:A0": {room: 13},
     "18:FE:34:E1:AF:AD": {room: 14}, //Vale
     };
+    
+var sets = {
+    "all": Object.keys(devices),
+    "scene": Object.keys(devices).slice(0,6),
+    "windows": Object.keys(devices).slice(0,4),
+    "counter": Object.keys(devices).slice(4),
+    "codingPen": Object.keys(devices).slice(5),
+    "farmBot" : Object.keys(devices).slice(6)
+    /*"segment1": Object.keys(devices).slice(0, 4),
+    "segment2": Object.keys(devices).slice(4, 8),
+    "segment3": Object.keys(devices).slice(8)*/
+};
 
 var roomDevices = {};
 function convertDevicesToRooms() {
@@ -66,15 +79,6 @@ convertDevicesToRooms();
 var deviceObjs = {};
 Object.keys(devices).forEach(device => deviceObjs[device] = {});
 
-var sets = {
-    "all": Object.keys(devices),
-    "windows": Object.keys(devices).slice(0,4),
-    "counter": Object.keys(devices).slice(4),
-    "codingPen": Object.keys(devices).slice(5)
-    /*"segment1": Object.keys(devices).slice(0, 4),
-    "segment2": Object.keys(devices).slice(4, 8),
-    "segment3": Object.keys(devices).slice(8)*/
-};
 
 function sendRGB(mac, rgb) {
     devices[mac].color = rgb;
