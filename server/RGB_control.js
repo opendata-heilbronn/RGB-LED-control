@@ -52,7 +52,7 @@ var devices = {
     "5C:CF:7F:88:1A:13": {room: 11},
     "5C:CF:7F:8B:EF:42": {room: 12}, //Vale
     "5C:CF:7F:88:1D:A0": {room: 13},
-    "18:FE:34:E1:AF:AD": {room: 14}, //Vale
+    "A0:20:A6:17:B8:FF": {room: 14}, //Vale
     };
     
 var sets = {

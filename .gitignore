@@ -48,3 +48,6 @@ update-project.sh
 
 .piolibdeps
 **/lib/readme.txt
+
+.DS_Store
+
