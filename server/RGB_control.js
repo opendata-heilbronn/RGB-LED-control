@@ -59,9 +59,9 @@ var sets = {
     "all": Object.keys(devices),
     "scene": Object.keys(devices).slice(0,6),
     "windows": Object.keys(devices).slice(0,4),
-    "counter": Object.keys(devices).slice(4),
-    "codingPen": Object.keys(devices).slice(5),
-    "farmBot" : Object.keys(devices).slice(6)
+    "counter": Object.keys(devices).slice(4, 5),
+    "codingPen": Object.keys(devices).slice(5, 6),
+    "farmBot" : Object.keys(devices).slice(6, 7)
     /*"segment1": Object.keys(devices).slice(0, 4),
     "segment2": Object.keys(devices).slice(4, 8),
     "segment3": Object.keys(devices).slice(8)*/
