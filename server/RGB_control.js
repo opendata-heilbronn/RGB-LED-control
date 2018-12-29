@@ -28,7 +28,7 @@ const server = require('./server');
 const io = server.io;
 
 //MQTT stuff
-var client = mqtt.connect('mqtt://192.168.178.168');
+var client = mqtt.connect('mqtt://localhost');
 var domain = "RGB-LED-control";
 var topicRegistration = domain + "/registration";
 var topicACK = domain + "/ack/+";
